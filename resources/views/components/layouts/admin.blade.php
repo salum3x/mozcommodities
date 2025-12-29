@@ -8,9 +8,14 @@
     <title>{{ $title ?? 'Admin - AgriMarketplace' }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     @livewireStyles
 </head>
 <body class="font-sans antialiased bg-gray-100">
@@ -47,6 +52,9 @@
                             </a>
                             <a href="{{ route('admin.announcements') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.announcements') ? 'border-green-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700' }} text-sm font-medium">
                                 Anúncios
+                            </a>
+                            <a href="{{ route('admin.settings') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.settings') ? 'border-green-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700' }} text-sm font-medium">
+                                Configurações
                             </a>
                         </div>
                     </div>
