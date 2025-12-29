@@ -5,16 +5,12 @@ namespace App\Livewire\Public;
 use App\Models\Product;
 use App\Models\Category;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 
 class Home extends Component
 {
     public function mount()
     {
-        // Se o usuário está autenticado e é cliente, redirecionar para produtos
-        if (Auth::check() && Auth::user()->isCustomer()) {
-            return redirect()->route('products');
-        }
+        // Clientes podem ver a homepage normalmente
     }
 
     public function render()
