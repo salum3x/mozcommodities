@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-8 text-center">
-        <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background-color: #ffedd5;">
+            <svg class="w-8 h-8" style="color: #ea580c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
             </svg>
         </div>
@@ -25,7 +25,8 @@
                     </svg>
                 </div>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username"
-                    class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
+                    class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
+                    style="--tw-ring-color: #ea580c;"
                     placeholder="seu@email.com">
             </div>
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -41,7 +42,8 @@
                     </svg>
                 </div>
                 <input id="password" type="password" name="password" required autocomplete="current-password"
-                    class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
+                    class="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
+                    style="--tw-ring-color: #ea580c;"
                     placeholder="••••••••">
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -50,12 +52,12 @@
         <!-- Remember Me & Forgot Password -->
         <div class="flex items-center justify-between">
             <label for="remember_me" class="inline-flex items-center cursor-pointer group">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-500 focus:ring-2 transition-all" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 shadow-sm focus:ring-2 transition-all" style="color: #ea580c;" name="remember">
                 <span class="ml-2 text-sm text-gray-600 group-hover:text-gray-900 transition-colors">Lembrar-me</span>
             </label>
 
             @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors">
+                <a href="{{ route('password.request') }}" class="text-sm font-semibold transition-colors" style="color: #ea580c;">
                     Esqueceu a palavra-passe?
                 </a>
             @endif
@@ -63,7 +65,7 @@
 
         <!-- Submit Button -->
         <div>
-            <button type="submit" class="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 transform hover:scale-105">
+            <button type="submit" style="background: linear-gradient(to right, #ea580c, #c2410c);" class="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-bold text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105">
                 <span>Entrar como Fornecedor</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -73,9 +75,9 @@
     </form>
 
     <!-- Benefits -->
-    <div class="mt-6 p-4 bg-orange-50 rounded-xl border border-orange-100">
-        <p class="text-sm font-semibold text-orange-800 mb-2">Beneficios de ser Fornecedor:</p>
-        <ul class="text-xs text-orange-700 space-y-1">
+    <div class="mt-6 p-4 rounded-xl border" style="background-color: #fff7ed; border-color: #fed7aa;">
+        <p class="text-sm font-semibold mb-2" style="color: #9a3412;">Beneficios de ser Fornecedor:</p>
+        <ul class="text-xs space-y-1" style="color: #c2410c;">
             <li class="flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -101,7 +103,7 @@
     <div class="mt-6 text-center">
         <p class="text-sm text-gray-600">
             Ainda nao tem conta?
-            <a href="{{ route('register.supplier') }}" class="font-semibold text-orange-600 hover:text-orange-700 transition-colors">
+            <a href="{{ route('register.supplier') }}" class="font-semibold transition-colors" style="color: #ea580c;">
                 Criar conta de Fornecedor
             </a>
         </p>
