@@ -32,6 +32,29 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Handle an incoming admin authentication request.
+     */
+    public function storeAdmin(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $user = Auth::user();
+
+        // Verify the user is an admin
+        if (!$user->isAdmin()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login.admin')->with('error', 'Acesso negado. Esta área é exclusiva para administradores.');
+        }
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('admin.dashboard', absolute: false));
+    }
+
+    /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request): RedirectResponse

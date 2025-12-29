@@ -41,6 +41,13 @@ Route::middleware('guest')->group(function () {
         return view('auth.login-supplier');
     })->name('login.supplier');
 
+    Route::get('entrar/admin', function () {
+        return view('auth.login-admin');
+    })->name('login.admin');
+
+    Route::post('entrar/admin', [AuthenticatedSessionController::class, 'storeAdmin'])
+        ->name('login.admin.post');
+
     Route::post('entrar', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('esqueci-senha', [PasswordResetLinkController::class, 'create'])
