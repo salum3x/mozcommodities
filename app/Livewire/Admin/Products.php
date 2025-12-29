@@ -18,7 +18,7 @@ class Products extends Component
     public $statusFilter = '';
 
     // Form fields
-    public $showModal = false;
+    public $showForm = false;
     public $editingId = null;
     public $name = '';
     public $description = '';
@@ -43,7 +43,7 @@ class Products extends Component
     public function create()
     {
         $this->resetForm();
-        $this->showModal = true;
+        $this->showForm = true;
     }
 
     public function edit($id)
@@ -57,7 +57,7 @@ class Products extends Component
         $this->price_per_kg = $product->price_per_kg;
         $this->unit = $product->unit;
         $this->is_active = $product->is_active;
-        $this->showModal = true;
+        $this->showForm = true;
     }
 
     public function save()
@@ -87,12 +87,12 @@ class Products extends Component
             session()->flash('message', 'Produto criado com sucesso!');
         }
 
-        $this->closeModal();
+        $this->closeForm();
     }
 
-    public function closeModal()
+    public function closeForm()
     {
-        $this->showModal = false;
+        $this->showForm = false;
         $this->resetForm();
     }
 

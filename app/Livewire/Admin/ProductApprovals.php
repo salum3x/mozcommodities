@@ -9,7 +9,7 @@ class ProductApprovals extends Component
 {
     public $pendingProducts = [];
     public $selectedProduct = null;
-    public $cost_price = '';
+    public $cost_price = 0;
     public $platform_margin = 20; // Margem padrão de 20%
     public $calculated_price = 0;
     public $stock_kg = 0;
@@ -33,7 +33,7 @@ class ProductApprovals extends Component
     public function openApprovalModal($productId)
     {
         $this->selectedProduct = Product::with(['supplier.user', 'category'])->find($productId);
-        $this->cost_price = $this->selectedProduct->cost_price ?? '';
+        $this->cost_price = $this->selectedProduct->cost_price ?? 0;
         $this->platform_margin = $this->selectedProduct->platform_margin ?? 20;
         $this->stock_kg = $this->selectedProduct->stock_kg ?? 0;
         $this->calculatePrice();
@@ -59,9 +59,14 @@ class ProductApprovals extends Component
 
     public function calculatePrice()
     {
-        if ($this->cost_price && $this->platform_margin) {
+        $cost = floatval($this->cost_price);
+        $margin = floatval($this->platform_margin);
+
+        if ($cost > 0 && $margin >= 0) {
             // P.V.P. = P.B.F. × (1 + Margem)
-            $this->calculated_price = $this->cost_price * (1 + ($this->platform_margin / 100));
+            $this->calculated_price = $cost * (1 + ($margin / 100));
+        } else {
+            $this->calculated_price = 0;
         }
     }
 

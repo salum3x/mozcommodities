@@ -16,7 +16,7 @@ class Suppliers extends Component
     public $statusFilter = '';
 
     // Form fields
-    public $showModal = false;
+    public $showForm = false;
     public $editingId = null;
     public $company_name = '';
     public $document_number = '';
@@ -53,7 +53,7 @@ class Suppliers extends Component
     public function create()
     {
         $this->resetForm();
-        $this->showModal = true;
+        $this->showForm = true;
     }
 
     public function edit($id)
@@ -66,7 +66,7 @@ class Suppliers extends Component
         $this->address = $supplier->address;
         $this->description = $supplier->description;
         $this->status = $supplier->status;
-        $this->showModal = true;
+        $this->showForm = true;
     }
 
     public function save()
@@ -106,12 +106,12 @@ class Suppliers extends Component
             session()->flash('message', 'Fornecedor criado com sucesso!');
         }
 
-        $this->closeModal();
+        $this->closeForm();
     }
 
-    public function closeModal()
+    public function closeForm()
     {
-        $this->showModal = false;
+        $this->showForm = false;
         $this->resetForm();
     }
 

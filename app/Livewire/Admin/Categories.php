@@ -14,7 +14,7 @@ class Categories extends Component
     public $description = '';
     public $is_active = true;
     public $editingId = null;
-    public $showModal = false;
+    public $showForm = false;
     public $search = '';
 
     protected $rules = [
@@ -25,9 +25,8 @@ class Categories extends Component
 
     public function create()
     {
-        $this->reset(['name', 'description', 'is_active', 'editingId']);
-        $this->is_active = true;
-        $this->showModal = true;
+        $this->resetForm();
+        $this->showForm = true;
     }
 
     public function edit($id)
@@ -37,7 +36,7 @@ class Categories extends Component
         $this->name = $category->name;
         $this->description = $category->description;
         $this->is_active = $category->is_active;
-        $this->showModal = true;
+        $this->showForm = true;
     }
 
     public function save()
@@ -61,19 +60,25 @@ class Categories extends Component
             session()->flash('message', 'Categoria criada com sucesso!');
         }
 
-        $this->closeModal();
+        $this->closeForm();
     }
 
     public function delete($id)
     {
         Category::findOrFail($id)->delete();
-        session()->flash('message', 'Categoria excluída com sucesso!');
+        session()->flash('message', 'Categoria excluida com sucesso!');
     }
 
-    public function closeModal()
+    public function closeForm()
     {
-        $this->showModal = false;
+        $this->showForm = false;
+        $this->resetForm();
+    }
+
+    public function resetForm()
+    {
         $this->reset(['name', 'description', 'is_active', 'editingId']);
+        $this->is_active = true;
     }
 
     public function render()
