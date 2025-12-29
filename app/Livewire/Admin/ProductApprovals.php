@@ -113,6 +113,7 @@ class ProductApprovals extends Component
 
     public function render()
     {
-        return view('livewire.admin.product-approvals');
+        return view('livewire.admin.product-approvals')
+            ->layout('components.layouts.admin');
     }
 }

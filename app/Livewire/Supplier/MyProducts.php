@@ -8,6 +8,7 @@ class MyProducts extends Component
 {
     public function render()
     {
-        return view('livewire.supplier.my-products');
+        return view('livewire.supplier.my-products')
+            ->layout('components.layouts.supplier');
     }
 }

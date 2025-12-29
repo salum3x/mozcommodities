@@ -8,6 +8,7 @@ class StockManagement extends Component
 {
     public function render()
     {
-        return view('livewire.supplier.stock-management');
+        return view('livewire.supplier.stock-management')
+            ->layout('components.layouts.supplier');
     }
 }

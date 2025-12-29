@@ -8,6 +8,7 @@ class QuoteRequests extends Component
 {
     public function render()
     {
-        return view('livewire.admin.quote-requests');
+        return view('livewire.admin.quote-requests')
+            ->layout('components.layouts.admin');
     }
 }
