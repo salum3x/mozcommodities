@@ -102,22 +102,76 @@
                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500">
                             </div>
 
-                            <!-- Address -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Address Section -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Meu Endereco de Entrega
+                        </h2>
+                        <p class="text-sm text-gray-500 mt-1">Este endereco sera usado como local de entrega nas suas compras</p>
+                    </div>
+                    <form method="post" action="{{ route('profile.update') }}" class="p-6">
+                        @csrf
+                        @method('patch')
+
+                        <!-- Hidden fields to preserve other data -->
+                        <input type="hidden" name="name" value="{{ $user->name }}">
+                        <input type="hidden" name="email" value="{{ $user->email }}">
+                        <input type="hidden" name="phone" value="{{ $user->phone }}">
+
+                        <div class="space-y-4">
+                            @if($user->address)
+                                <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
+                                    <div class="flex items-start gap-3">
+                                        <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <div>
+                                            <p class="font-medium text-green-800">Endereco atual</p>
+                                            <p class="text-green-700">{{ $user->address }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4">
+                                    <div class="flex items-start gap-3">
+                                        <svg class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                        </svg>
+                                        <div>
+                                            <p class="font-medium text-yellow-800">Nenhum endereco cadastrado</p>
+                                            <p class="text-sm text-yellow-700">Adicione seu endereco para agilizar suas compras</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
                             <div>
-                                <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Endereco</label>
-                                <input type="text" id="address" name="address" value="{{ old('address', $user->address) }}"
-                                       placeholder="Maputo, Mocambique"
-                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                                <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+                                    {{ $user->address ? 'Atualizar endereco' : 'Adicionar endereco' }}
+                                </label>
+                                <textarea id="address" name="address" rows="3"
+                                       placeholder="Ex: Av. Julius Nyerere, 1234, Maputo, Mocambique"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500">{{ old('address', $user->address) }}</textarea>
+                                <p class="mt-2 text-sm text-gray-500">Inclua rua, numero, bairro, cidade e provincia para facilitar a entrega</p>
                             </div>
                         </div>
 
                         <div class="mt-6 flex justify-end">
                             <button type="submit"
-                                    class="px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition flex items-center">
+                                    class="px-6 py-3 bg-orange-600 text-white font-semibold rounded-xl hover:bg-orange-700 transition flex items-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 </svg>
-                                Guardar Alteracoes
+                                Salvar Endereco
                             </button>
                         </div>
                     </form>

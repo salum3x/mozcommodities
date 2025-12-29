@@ -41,6 +41,7 @@ class CheckoutCart extends Component
             $this->customer_name = auth()->user()->name;
             $this->customer_email = auth()->user()->email;
             $this->customer_phone = auth()->user()->phone ?? '';
+            $this->customer_address = auth()->user()->address ?? '';
         }
     }
 
