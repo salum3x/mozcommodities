@@ -29,8 +29,10 @@ Route::middleware('guest')->group(function () {
 
     Route::post('registar/fornecedor', [RegisteredUserController::class, 'storeSupplier']);
 
-    Route::get('entrar', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+    // Redirecionar /entrar para login de cliente (padrão)
+    Route::get('entrar', function () {
+        return redirect()->route('login.customer');
+    })->name('login');
 
     // Login pages for different user types
     Route::get('entrar/cliente', function () {

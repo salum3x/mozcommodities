@@ -1,11 +1,19 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Public\Home;
 use App\Livewire\Public\Products;
 use App\Livewire\Public\ProductDetail;
 use App\Livewire\Public\QuoteForm;
+
+// Webhooks de Pagamento (sem CSRF)
+Route::prefix('webhooks')->name('webhooks.')->withoutMiddleware(['web'])->group(function () {
+    Route::post('/mpesa', [WebhookController::class, 'mpesa'])->name('mpesa');
+    Route::post('/emola', [WebhookController::class, 'emola'])->name('emola');
+    Route::post('/stripe', [WebhookController::class, 'stripe'])->name('stripe');
+});
 
 // Rotas Públicas
 Route::get('/', Home::class)->name('home');
