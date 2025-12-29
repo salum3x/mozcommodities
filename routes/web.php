@@ -1,0 +1,62 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Public\Home;
+use App\Livewire\Public\Products;
+use App\Livewire\Public\ProductDetail;
+use App\Livewire\Public\QuoteForm;
+
+// Rotas Públicas
+Route::get('/', Home::class)->name('home');
+Route::get('/produtos', Products::class)->name('products');
+Route::get('/nossos-produtos', \App\Livewire\Public\OurProducts::class)->name('our.products');
+Route::get('/produto/{slug}', ProductDetail::class)->name('product.detail');
+Route::get('/cotacao', QuoteForm::class)->name('quote.form');
+Route::get('/solicitar-produto', \App\Livewire\Public\ProductRequest::class)->name('product.request');
+Route::get('/carrinho', \App\Livewire\Public\Cart::class)->name('cart');
+Route::get('/finalizar-compra', \App\Livewire\Public\CheckoutCart::class)->name('checkout.cart');
+Route::get('/comprar/{product_id}', \App\Livewire\Public\Checkout::class)->name('checkout');
+Route::get('/pedido/{order}/sucesso', \App\Livewire\Public\OrderSuccess::class)->name('order.success');
+
+// Dashboard Geral (redireciona baseado no role)
+Route::get('/painel', function () {
+    $user = auth()->user();
+
+    if ($user->isAdmin()) {
+        return redirect()->route('admin.dashboard');
+    } elseif ($user->isSupplier()) {
+        return redirect()->route('supplier.dashboard');
+    } else {
+        return redirect()->route('home');
+    }
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// Rotas Admin
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/painel', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
+    Route::get('/categorias', \App\Livewire\Admin\Categories::class)->name('categories');
+    Route::get('/fornecedores', \App\Livewire\Admin\Suppliers::class)->name('suppliers');
+    Route::get('/produtos', \App\Livewire\Admin\Products::class)->name('products');
+    Route::get('/aprovar-produtos', \App\Livewire\Admin\ProductApprovals::class)->name('approvals');
+    Route::get('/solicitacoes', \App\Livewire\Admin\ProductRequests::class)->name('product.requests');
+    Route::get('/cotacoes', \App\Livewire\Admin\QuoteRequests::class)->name('quotes');
+    Route::get('/anuncios', \App\Livewire\Admin\Announcements::class)->name('announcements');
+    Route::get('/configuracoes', \App\Livewire\Admin\Settings::class)->name('settings');
+});
+
+// Rotas Fornecedor
+Route::middleware(['auth', 'role:supplier'])->prefix('fornecedor')->name('supplier.')->group(function () {
+    Route::get('/painel', \App\Livewire\Supplier\Dashboard::class)->name('dashboard');
+    Route::get('/meus-produtos', \App\Livewire\Supplier\MyProducts::class)->name('products');
+    Route::get('/stock', \App\Livewire\Supplier\StockManagement::class)->name('stock');
+});
+
+// Rotas de Perfil
+Route::middleware('auth')->group(function () {
+    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
