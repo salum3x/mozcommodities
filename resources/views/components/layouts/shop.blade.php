@@ -247,22 +247,82 @@
                                 </div>
                             </div>
                         @else
-                            <a href="{{ route('login') }}" class="flex items-center gap-2 text-white cursor-pointer hover:outline hover:outline-1 hover:outline-white rounded p-2">
-                                <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                                <div class="hidden sm:block text-left">
-                                    <span class="text-xs text-gray-300 block">Ola, Faca login</span>
-                                    <span class="font-bold text-sm flex items-center">
-                                        Entrar
-                                        <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" class="flex items-center gap-2 text-white cursor-pointer hover:outline hover:outline-1 hover:outline-white rounded p-2">
+                                    <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                         </svg>
-                                    </span>
+                                    </div>
+                                    <div class="hidden sm:block text-left">
+                                        <span class="text-xs text-gray-300 block">Ola, Faca login</span>
+                                        <span class="font-bold text-sm flex items-center">
+                                            Entrar
+                                            <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </button>
+
+                                <!-- Login Dropdown -->
+                                <div x-show="open" @click.away="open = false" x-cloak
+                                     class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border z-50 overflow-hidden">
+                                    <!-- Header -->
+                                    <div class="p-4 bg-gray-50 border-b">
+                                        <p class="text-sm font-semibold text-gray-900">Como deseja entrar?</p>
+                                        <p class="text-xs text-gray-500 mt-1">Escolha o tipo de conta</p>
+                                    </div>
+
+                                    <!-- Login Options -->
+                                    <div class="p-3 space-y-2">
+                                        <!-- Cliente -->
+                                        <a href="{{ route('login') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 transition group">
+                                            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition">
+                                                <svg class="w-6 h-6 text-green-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-semibold text-gray-900 group-hover:text-green-600 transition">Entrar como Cliente</p>
+                                                <p class="text-xs text-gray-500">Comprar produtos</p>
+                                            </div>
+                                            <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+
+                                        <!-- Fornecedor -->
+                                        <a href="{{ route('login') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-50 transition group">
+                                            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition">
+                                                <svg class="w-6 h-6 text-orange-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-semibold text-gray-900 group-hover:text-orange-600 transition">Entrar como Fornecedor</p>
+                                                <p class="text-xs text-gray-500">Vender produtos</p>
+                                            </div>
+                                            <svg class="w-5 h-5 text-gray-400 group-hover:text-orange-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+
+                                    <!-- Register Links -->
+                                    <div class="p-3 bg-gray-50 border-t">
+                                        <p class="text-xs text-gray-500 text-center mb-2">Ainda nao tem conta?</p>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <a href="{{ route('register.customer') }}" class="py-2 px-3 bg-green-600 text-white text-center text-sm font-semibold rounded-lg hover:bg-green-700 transition">
+                                                Criar Cliente
+                                            </a>
+                                            <a href="{{ route('register.supplier') }}" class="py-2 px-3 bg-orange-600 text-white text-center text-sm font-semibold rounded-lg hover:bg-orange-700 transition">
+                                                Criar Fornecedor
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
+                            </div>
                         @endauth
 
                         <!-- Orders -->
