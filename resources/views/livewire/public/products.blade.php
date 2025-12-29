@@ -1,7 +1,4 @@
 <div class="min-h-screen bg-gray-100">
-    @guest
-    <x-public-nav />
-    @endguest
 
     @auth
     <!-- Top Bar Estilo AliExpress -->

@@ -1,6 +1,4 @@
 <div class="min-h-screen bg-gray-50">
-    <x-public-nav />
-
     <div class="py-12">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-sm p-8">

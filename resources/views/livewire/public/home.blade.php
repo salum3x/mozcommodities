@@ -1,7 +1,4 @@
 <div class="min-h-screen bg-gray-50">
-    <!-- Navigation Bar (Transparent) -->
-    <x-navbar :transparent="true" />
-
     <!-- Hero Section -->
     <div class="relative overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-green-800">
         <!-- Pattern overlay -->
@@ -293,6 +290,4 @@
             </a>
         </div>
     </div>
-
-    <x-whatsapp-button />
 </div>
