@@ -59,6 +59,7 @@
     @php
         $cartCount = \App\Models\CartItem::getCartCount();
         $announcements = \App\Models\Announcement::active()->get();
+        $categories = \App\Models\Category::where('is_active', true)->withCount('products')->get();
     @endphp
 
     <!-- Announcement Ticker Bar -->
@@ -151,22 +152,102 @@
                     </div>
 
                     <!-- Search Bar -->
-                    <div class="flex-1 max-w-3xl">
-                        <form action="{{ route('products') }}" method="GET" class="flex">
-                            <select name="category" class="hidden sm:block bg-gray-200 text-gray-900 text-sm rounded-l-lg px-3 py-2.5 border-r border-gray-300 focus:outline-none cursor-pointer">
-                                <option value="">Todos</option>
-                                @php $categories = \App\Models\Category::where('is_active', true)->get(); @endphp
-                                @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                @endforeach
-                            </select>
-                            <input type="text"
-                                   name="search"
-                                   value="{{ request('search') }}"
-                                   placeholder="Pesquisar produtos agrícolas..."
-                                   class="flex-1 px-4 py-2.5 text-gray-900 text-sm focus:outline-none {{ request()->has('category') ? '' : 'sm:rounded-l-lg' }}">
-                            <button type="submit" class="bg-green-500 hover:bg-green-600 px-4 rounded-r-lg transition">
-                                <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex-1 max-w-3xl" x-data="{
+                        open: false,
+                        selected: '{{ request('category') }}',
+                        selectedName: '{{ request('category') ? $categories->where('id', request('category'))->first()?->name ?? 'Todos' : 'Todos' }}'
+                    }">
+                        <form action="{{ route('products') }}" method="GET" class="flex h-12 rounded-xl shadow-lg border border-gray-200">
+                            <!-- Category Dropdown -->
+                            <div class="relative hidden sm:block">
+                                <button type="button" @click="open = !open"
+                                        class="h-full bg-gradient-to-b from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 text-gray-700 text-sm font-semibold pl-4 pr-3 flex items-center gap-2 border-r border-gray-200 transition-all min-w-[130px] rounded-l-xl">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                    </svg>
+                                    <span x-text="selectedName" class="truncate max-w-[80px]">Todos</span>
+                                    <svg class="w-4 h-4 text-gray-400 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="category" x-model="selected">
+
+                                <!-- Dropdown Menu -->
+                                <div x-show="open"
+                                     @click.away="open = false"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 -translate-y-2"
+                                     x-transition:enter-end="opacity-100 translate-y-0"
+                                     x-transition:leave="transition ease-in duration-150"
+                                     x-transition:leave-start="opacity-100 translate-y-0"
+                                     x-transition:leave-end="opacity-0 -translate-y-2"
+                                     x-cloak
+                                     class="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 z-[9999] overflow-hidden">
+                                    <!-- Header -->
+                                    <div class="px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white">
+                                        <p class="font-semibold text-sm">Selecionar Categoria</p>
+                                        <p class="text-xs text-green-100">Filtre por tipo de produto</p>
+                                    </div>
+
+                                    <!-- Options -->
+                                    <div class="max-h-72 overflow-y-auto py-2">
+                                        <button type="button"
+                                                @click="selected = ''; selectedName = 'Todos'; open = false"
+                                                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-green-50 transition-colors"
+                                                :class="{ 'bg-green-50': selected === '' }">
+                                            <span class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                                                  :class="selected === '' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                                </svg>
+                                            </span>
+                                            <div class="flex-1 text-left">
+                                                <p class="text-sm font-medium text-gray-900">Todas Categorias</p>
+                                                <p class="text-xs text-gray-500">Ver todos os produtos</p>
+                                            </div>
+                                            <svg x-show="selected === ''" class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+
+                                        <div class="h-px bg-gray-100 mx-4 my-1"></div>
+
+                                        @foreach($categories as $cat)
+                                            <button type="button"
+                                                    @click="selected = '{{ $cat->id }}'; selectedName = '{{ $cat->name }}'; open = false"
+                                                    class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-green-50 transition-colors"
+                                                    :class="{ 'bg-green-50': selected === '{{ $cat->id }}' }">
+                                                <span class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                                                      :class="selected === '{{ $cat->id }}' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                                    </svg>
+                                                </span>
+                                                <div class="flex-1 text-left">
+                                                    <p class="text-sm font-medium text-gray-900">{{ $cat->name }}</p>
+                                                    <p class="text-xs text-gray-500">{{ $cat->products_count ?? 0 }} produtos</p>
+                                                </div>
+                                                <svg x-show="selected === '{{ $cat->id }}'" class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Search Input -->
+                            <div class="flex-1 relative">
+                                <input type="text"
+                                       name="search"
+                                       value="{{ request('search') }}"
+                                       placeholder="Pesquisar produtos agrícolas..."
+                                       class="w-full h-full px-4 text-gray-900 text-sm focus:outline-none bg-white placeholder-gray-400 border-0">
+                            </div>
+
+                            <!-- Search Button -->
+                            <button type="submit" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 px-6 flex items-center justify-center transition-all group rounded-r-xl">
+                                <svg class="w-5 h-5 text-white group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </button>
