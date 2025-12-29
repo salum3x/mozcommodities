@@ -11,6 +11,7 @@ class Supplier extends Model
         'company_name',
         'business_license',
         'description',
+        'phone',
         'status',
         'document_number',
         'whatsapp',

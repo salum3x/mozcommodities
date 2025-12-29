@@ -71,8 +71,8 @@
 
                                 <!-- Imagem do Produto -->
                                 <div class="relative h-64 bg-gradient-to-br from-orange-50 to-orange-100">
-                                    @if($product->image_path)
-                                        <img src="{{ asset('storage/' . $product->image_path) }}"
+                                    @if($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}"
                                              alt="{{ $product->name }}"
                                              class="w-full h-full object-cover">
                                     @else

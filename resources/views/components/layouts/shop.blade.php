@@ -56,7 +56,67 @@
 </head>
 <body class="font-sans antialiased bg-gray-100" x-data="{ mobileMenuOpen: false }">
 
-    @php $cartCount = \App\Models\CartItem::getCartCount(); @endphp
+    @php
+        $cartCount = \App\Models\CartItem::getCartCount();
+        $announcements = \App\Models\Announcement::active()->get();
+    @endphp
+
+    <!-- Announcement Ticker Bar -->
+    @if($announcements->count() > 0)
+        <div class="bg-gradient-to-r from-green-600 via-green-500 to-green-600 text-white py-2.5 overflow-hidden relative">
+            <div class="ticker-wrapper">
+                <div class="announcement-ticker">
+                    @foreach($announcements as $announcement)
+                        <span class="ticker-item">
+                            <svg class="w-4 h-4 mr-2 text-yellow-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm font-medium">{{ $announcement->message }}</span>
+                            <span class="mx-8 text-yellow-300">•</span>
+                        </span>
+                    @endforeach
+                    <!-- Duplicate for seamless loop -->
+                    @foreach($announcements as $announcement)
+                        <span class="ticker-item">
+                            <svg class="w-4 h-4 mr-2 text-yellow-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm font-medium">{{ $announcement->message }}</span>
+                            <span class="mx-8 text-yellow-300">•</span>
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <style>
+            .ticker-wrapper {
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+            }
+            .announcement-ticker {
+                display: inline-flex;
+                white-space: nowrap;
+                animation: ticker-scroll 25s linear infinite;
+            }
+            .ticker-item {
+                display: inline-flex;
+                align-items: center;
+                padding: 0 0.5rem;
+            }
+            @keyframes ticker-scroll {
+                0% {
+                    transform: translateX(100vw);
+                }
+                100% {
+                    transform: translateX(-100%);
+                }
+            }
+            .announcement-ticker:hover {
+                animation-play-state: paused;
+            }
+        </style>
+    @endif
 
     <!-- Top Header Bar (Amazon style) -->
     <header class="bg-gray-900 sticky top-0 z-50">
@@ -425,7 +485,7 @@
                                         <p class="text-xs text-gray-500">Produtos da empresa</p>
                                     </div>
                                 </a>
-                                <a href="{{ route('supplier.products') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-orange-50 transition group">
+                                <a href="{{ route('public.supplier.products') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-orange-50 transition group">
                                     <span class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-500 transition">
                                         <svg class="w-4 h-4 text-orange-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -539,7 +599,7 @@
                         <p class="text-xs text-gray-500">Produtos da empresa</p>
                     </div>
                 </a>
-                <a href="{{ route('supplier.products') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition">
+                <a href="{{ route('public.supplier.products') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition">
                     <span class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                         <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>

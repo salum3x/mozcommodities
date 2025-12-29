@@ -9,19 +9,30 @@ class Product extends Model
 {
     protected $fillable = [
         'supplier_id',
+        'is_company_product',
         'category_id',
         'name',
         'slug',
         'description',
         'price_per_kg',
+        'cost_price',
+        'platform_margin',
         'unit',
+        'stock_quantity',
+        'stock_kg',
+        'min_quantity',
         'image',
         'is_active',
+        'approval_status',
+        'rejection_reason',
     ];
 
     protected $casts = [
         'price_per_kg' => 'decimal:2',
+        'cost_price' => 'decimal:2',
+        'platform_margin' => 'decimal:2',
         'is_active' => 'boolean',
+        'is_company_product' => 'boolean',
     ];
 
     protected static function boot()

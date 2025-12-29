@@ -19,7 +19,7 @@ Route::prefix('webhooks')->name('webhooks.')->withoutMiddleware(['web'])->group(
 Route::get('/', Home::class)->name('home');
 Route::get('/produtos', Products::class)->name('products');
 Route::get('/nossos-produtos', \App\Livewire\Public\OurProducts::class)->name('our.products');
-Route::get('/produtos-fornecedores', \App\Livewire\Public\SupplierProducts::class)->name('supplier.products');
+Route::get('/produtos-fornecedores', \App\Livewire\Public\SupplierProducts::class)->name('public.supplier.products');
 Route::get('/categoria/{slug}', \App\Livewire\Public\CategoryProducts::class)->name('category.products');
 Route::get('/produto/{slug}', ProductDetail::class)->name('product.detail');
 Route::get('/cotacao', QuoteForm::class)->name('quote.form');
@@ -63,6 +63,8 @@ Route::middleware(['auth', 'role:supplier'])->prefix('fornecedor')->name('suppli
     Route::get('/painel', \App\Livewire\Supplier\Dashboard::class)->name('dashboard');
     Route::get('/meus-produtos', \App\Livewire\Supplier\MyProducts::class)->name('products');
     Route::get('/stock', \App\Livewire\Supplier\StockManagement::class)->name('stock');
+    Route::get('/vendas', \App\Livewire\Supplier\MySales::class)->name('sales');
+    Route::get('/relatorios', \App\Livewire\Supplier\Reports::class)->name('reports');
 });
 
 // Rotas de Perfil

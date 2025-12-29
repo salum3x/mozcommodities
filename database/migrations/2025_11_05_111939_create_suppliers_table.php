@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('company_name');
             $table->string('business_license')->nullable();
             $table->text('description')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('document_number')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->text('address')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });

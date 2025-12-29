@@ -104,8 +104,8 @@
                                 <!-- Product Image -->
                                 <a href="{{ route('product.detail', $product->id) }}" class="block">
                                     <div class="relative aspect-square bg-gray-50 overflow-hidden">
-                                        @if($product->image_path)
-                                            <img src="{{ asset('storage/' . $product->image_path) }}"
+                                        @if($product->image)
+                                            <img src="{{ asset('storage/' . $product->image) }}"
                                                  alt="{{ $product->name }}"
                                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                         @else
