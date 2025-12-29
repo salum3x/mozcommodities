@@ -19,6 +19,13 @@ class Products extends Component
 
     // Form fields
     public $showForm = false;
+
+    public function mount()
+    {
+        if (request()->has('action') && request('action') === 'create') {
+            $this->create();
+        }
+    }
     public $editingId = null;
     public $name = '';
     public $description = '';

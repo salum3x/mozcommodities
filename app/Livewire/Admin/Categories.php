@@ -17,6 +17,15 @@ class Categories extends Component
     public $showForm = false;
     public $search = '';
 
+    protected $queryString = ['search'];
+
+    public function mount()
+    {
+        if (request()->has('action') && request('action') === 'create') {
+            $this->create();
+        }
+    }
+
     protected $rules = [
         'name' => 'required|string|max:255',
         'description' => 'nullable|string|max:500',

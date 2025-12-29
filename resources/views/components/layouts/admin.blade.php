@@ -14,10 +14,13 @@
 
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-gray-100" x-data="{ sidebarOpen: false }">
+<body class="font-sans antialiased bg-gray-100" x-data="{
+    sidebarOpen: false,
+    openMenu: '{{ request()->routeIs('admin.categories*') ? 'categorias' : (request()->routeIs('admin.products*') ? 'produtos' : (request()->routeIs('admin.suppliers*') ? 'fornecedores' : '')) }}'
+}">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 transform transition-transform duration-300 lg:translate-x-0"
+        <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 transform transition-transform duration-300 lg:translate-x-0 overflow-y-auto"
                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
 
             <!-- Logo -->
@@ -33,7 +36,7 @@
             </div>
 
             <!-- Navigation -->
-            <nav class="mt-6 px-3">
+            <nav class="mt-6 px-3 pb-20">
                 <div class="space-y-1">
                     <!-- Dashboard -->
                     <a href="{{ route('admin.dashboard') }}"
@@ -44,32 +47,101 @@
                         <span class="font-medium">Dashboard</span>
                     </a>
 
-                    <!-- Categorias -->
-                    <a href="{{ route('admin.categories') }}"
-                       class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.categories') ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                        </svg>
-                        <span class="font-medium">Categorias</span>
-                    </a>
+                    <!-- Categorias - Menu com Submenu -->
+                    <div>
+                        <button @click="openMenu = openMenu === 'categorias' ? '' : 'categorias'"
+                                class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.categories*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                </svg>
+                                <span class="font-medium">Categorias</span>
+                            </div>
+                            <svg class="w-4 h-4 transition-transform" :class="openMenu === 'categorias' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div x-show="openMenu === 'categorias'" x-collapse class="mt-1 ml-4 space-y-1">
+                            <a href="{{ route('admin.categories') }}"
+                               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.categories') && !request()->has('action') ? 'bg-green-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                                Listar Categorias
+                            </a>
+                            <a href="{{ route('admin.categories') }}?action=create"
+                               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors text-gray-400 hover:bg-gray-800 hover:text-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Nova Categoria
+                            </a>
+                        </div>
+                    </div>
 
-                    <!-- Produtos -->
-                    <a href="{{ route('admin.products') }}"
-                       class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.products') ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                        </svg>
-                        <span class="font-medium">Produtos</span>
-                    </a>
+                    <!-- Produtos - Menu com Submenu -->
+                    <div>
+                        <button @click="openMenu = openMenu === 'produtos' ? '' : 'produtos'"
+                                class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.products*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                                <span class="font-medium">Produtos</span>
+                            </div>
+                            <svg class="w-4 h-4 transition-transform" :class="openMenu === 'produtos' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div x-show="openMenu === 'produtos'" x-collapse class="mt-1 ml-4 space-y-1">
+                            <a href="{{ route('admin.products') }}"
+                               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.products') && !request()->has('action') ? 'bg-green-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                                Listar Produtos
+                            </a>
+                            <a href="{{ route('admin.products') }}?action=create"
+                               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors text-gray-400 hover:bg-gray-800 hover:text-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Novo Produto
+                            </a>
+                        </div>
+                    </div>
 
-                    <!-- Fornecedores -->
-                    <a href="{{ route('admin.suppliers') }}"
-                       class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.suppliers') ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        <span class="font-medium">Fornecedores</span>
-                    </a>
+                    <!-- Fornecedores - Menu com Submenu -->
+                    <div>
+                        <button @click="openMenu = openMenu === 'fornecedores' ? '' : 'fornecedores'"
+                                class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-colors {{ request()->routeIs('admin.suppliers*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <span class="font-medium">Fornecedores</span>
+                            </div>
+                            <svg class="w-4 h-4 transition-transform" :class="openMenu === 'fornecedores' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div x-show="openMenu === 'fornecedores'" x-collapse class="mt-1 ml-4 space-y-1">
+                            <a href="{{ route('admin.suppliers') }}"
+                               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.suppliers') && !request()->has('action') ? 'bg-green-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                                Listar Fornecedores
+                            </a>
+                            <a href="{{ route('admin.suppliers') }}?action=create"
+                               class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-colors text-gray-400 hover:bg-gray-800 hover:text-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Novo Fornecedor
+                            </a>
+                        </div>
+                    </div>
 
                     <!-- Aprovar Produtos -->
                     <a href="{{ route('admin.approvals') }}"
@@ -86,7 +158,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
-                        <span class="font-medium">Solicitações</span>
+                        <span class="font-medium">Solicitacoes</span>
                     </a>
 
                     <!-- Cotações -->
@@ -95,7 +167,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                         </svg>
-                        <span class="font-medium">Cotações</span>
+                        <span class="font-medium">Cotacoes</span>
                     </a>
 
                     <!-- Anúncios -->
@@ -104,7 +176,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
                         </svg>
-                        <span class="font-medium">Anúncios</span>
+                        <span class="font-medium">Anuncios</span>
                     </a>
                 </div>
 
@@ -122,7 +194,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <span class="font-medium">Configurações</span>
+                        <span class="font-medium">Configuracoes</span>
                     </a>
 
                     <!-- Ver Site -->
