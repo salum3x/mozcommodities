@@ -65,15 +65,37 @@
                 </svg>
             </button>
         </div>
-
-        <!-- Register Link -->
-        <div class="text-center pt-4 border-t border-gray-200">
-            <p class="text-sm text-gray-600">
-                Ainda não tem uma conta?
-                <a href="{{ route('register') }}" class="font-semibold text-green-600 hover:text-green-700 transition-colors">
-                    Registar agora
-                </a>
-            </p>
-        </div>
     </form>
+
+    <!-- Account Types -->
+    <div class="mt-8 pt-6 border-t border-gray-200">
+        <p class="text-xs text-gray-500 text-center mb-4">Ainda nao tem conta? Escolha o tipo:</p>
+        <div class="grid grid-cols-2 gap-3">
+            <a href="{{ route('register.customer') }}"
+               class="flex items-center justify-center gap-2 py-3 px-4 bg-green-50 text-green-700 rounded-lg font-semibold text-sm hover:bg-green-100 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Cliente
+            </a>
+            <a href="{{ route('register.supplier') }}"
+               class="flex items-center justify-center gap-2 py-3 px-4 bg-orange-50 text-orange-700 rounded-lg font-semibold text-sm hover:bg-orange-100 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                Fornecedor
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Access Info -->
+    <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 text-center">
+            <span class="font-semibold">Contas de teste:</span><br>
+            Admin: admin@gmail.com<br>
+            Fornecedor: fornecedor@gmail.com<br>
+            Cliente: cliente@gmail.com<br>
+            <span class="text-gray-400">(senha: password123)</span>
+        </p>
+    </div>
 </x-guest-layout>
