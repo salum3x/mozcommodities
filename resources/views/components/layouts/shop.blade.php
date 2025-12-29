@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'MozCommodities - Marketplace Agricola' }}</title>
+    <title>{{ $title ?? 'MozCommodities - Marketplace Agrícola' }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -103,7 +103,7 @@
                             <input type="text"
                                    name="search"
                                    value="{{ request('search') }}"
-                                   placeholder="Pesquisar produtos agricolas..."
+                                   placeholder="Pesquisar produtos agrícolas..."
                                    class="flex-1 px-4 py-2.5 text-gray-900 text-sm focus:outline-none {{ request()->has('category') ? '' : 'sm:rounded-l-lg' }}">
                             <button type="submit" class="bg-green-500 hover:bg-green-600 px-4 rounded-r-lg transition">
                                 <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,7 +136,7 @@
                                         @endif
                                     </div>
                                     <div class="hidden sm:block text-left">
-                                        <span class="text-xs text-gray-300 block">Ola, {{ Str::words(auth()->user()->name, 1, '') }}</span>
+                                        <span class="text-xs text-gray-300 block">Olá, {{ Str::words(auth()->user()->name, 1, '') }}</span>
                                         <span class="font-bold text-sm flex items-center">
                                             Minha Conta
                                             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,7 +215,7 @@
                                             </div>
                                             <div>
                                                 <p class="font-medium text-sm">Meus Pedidos</p>
-                                                <p class="text-xs text-gray-500">Historico de compras</p>
+                                                <p class="text-xs text-gray-500">Histórico de compras</p>
                                             </div>
                                         </a>
 
@@ -255,7 +255,7 @@
                                         </svg>
                                     </div>
                                     <div class="hidden sm:block text-left">
-                                        <span class="text-xs text-gray-300 block">Ola, Faca login</span>
+                                        <span class="text-xs text-gray-300 block">Olá, Faça login</span>
                                         <span class="font-bold text-sm flex items-center">
                                             Entrar
                                             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,7 +311,7 @@
 
                                     <!-- Register Links -->
                                     <div class="p-3 bg-gray-50 border-t">
-                                        <p class="text-xs text-gray-500 text-center mb-2">Ainda nao tem conta?</p>
+                                        <p class="text-xs text-gray-500 text-center mb-2">Ainda não tem conta?</p>
                                         <div class="grid grid-cols-2 gap-2">
                                             <a href="{{ route('register.customer') }}" class="py-2 px-3 bg-green-600 text-white text-center text-sm font-semibold rounded-lg hover:bg-green-700 transition">
                                                 Criar Cliente
@@ -327,7 +327,7 @@
 
                         <!-- Orders -->
                         <a href="#" class="hidden sm:flex flex-col items-start text-white text-sm cursor-pointer hover:outline hover:outline-1 hover:outline-white rounded p-2">
-                            <span class="text-xs text-gray-300">Devolucoes</span>
+                            <span class="text-xs text-gray-300">Devoluções</span>
                             <span class="font-bold">e Pedidos</span>
                         </a>
 
@@ -356,22 +356,130 @@
         </div>
 
         <!-- Sub Navigation -->
-        <div class="bg-gray-800">
+        <div class="bg-gray-800 relative" x-data="{ menuOpen: false }">
             <div class="max-w-[1500px] mx-auto px-4">
                 <div class="flex items-center h-10 gap-1 text-sm text-white overflow-x-auto scrollbar-hide">
-                    <a href="{{ route('products') }}" class="flex items-center gap-1 px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded font-bold">
+                    <!-- Menu Dropdown Button -->
+                    <button @click="menuOpen = !menuOpen" class="flex items-center gap-1 px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded font-bold flex-shrink-0 bg-green-600 hover:bg-green-700 transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                         Todos
-                    </a>
-                    <a href="{{ route('home') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Inicio</a>
-                    <a href="{{ route('products') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Ofertas do Dia</a>
-                    <a href="{{ route('quote.form') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Pedir Cotacao</a>
-                    @foreach($categories->take(5) as $category)
-                        <a href="{{ route('products') }}?category={{ $category->id }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">{{ $category->name }}</a>
-                    @endforeach
-                    <a href="{{ route('product.request') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap text-green-400">Solicitar Produto</a>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': menuOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <a href="{{ route('home') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Início</a>
+                    <a href="{{ route('about') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Sobre Nós</a>
+                    <a href="{{ route('quote.form') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap">Pedir Cotação</a>
+                    <a href="{{ route('product.request') }}" class="px-3 py-1 hover:outline hover:outline-1 hover:outline-white rounded whitespace-nowrap text-green-400 font-medium">Solicitar Produto</a>
+                </div>
+            </div>
+
+            <!-- Mega Menu Dropdown -->
+            <div x-show="menuOpen" @click.away="menuOpen = false" x-cloak
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
+                 class="absolute left-0 right-0 top-full bg-white shadow-2xl border-t z-[9999]">
+                <div class="max-w-[1500px] mx-auto px-4 py-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                        <!-- Coluna 1: Tipos de Produtos -->
+                        <div>
+                            <h3 class="font-bold text-gray-900 mb-4 pb-2 border-b-2 border-green-500 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                                Tipos de Produtos
+                            </h3>
+                            <div class="space-y-1">
+                                <a href="{{ route('our.products') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-green-50 transition group">
+                                    <span class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-500 transition">
+                                        <svg class="w-4 h-4 text-green-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <p class="font-medium text-gray-900 text-sm">Nossos Produtos</p>
+                                        <p class="text-xs text-gray-500">Produtos da empresa</p>
+                                    </div>
+                                </a>
+                                <a href="{{ route('supplier.products') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-orange-50 transition group">
+                                    <span class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-500 transition">
+                                        <svg class="w-4 h-4 text-orange-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <p class="font-medium text-gray-900 text-sm">Fornecedores</p>
+                                        <p class="text-xs text-gray-500">Produtos de parceiros</p>
+                                    </div>
+                                </a>
+                                <a href="{{ route('products') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition group">
+                                    <span class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-700 transition">
+                                        <svg class="w-4 h-4 text-gray-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <p class="font-medium text-gray-900 text-sm">Todos os Produtos</p>
+                                        <p class="text-xs text-gray-500">Ver catálogo completo</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Coluna 2 & 3: Categorias -->
+                        <div class="md:col-span-2">
+                            <h3 class="font-bold text-gray-900 mb-4 pb-2 border-b-2 border-green-500 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                                Categorias
+                            </h3>
+                            <div class="grid grid-cols-2 gap-2">
+                                @foreach($categories as $category)
+                                    <a href="{{ route('category.products', $category->slug) }}"
+                                       class="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-green-50 transition group border border-transparent hover:border-green-200">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full group-hover:scale-125 transition"></span>
+                                        <span class="text-sm text-gray-700 group-hover:text-green-700 font-medium">{{ $category->name }}</span>
+                                        <span class="ml-auto text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full group-hover:bg-green-100 group-hover:text-green-700">
+                                            {{ $category->products_count ?? 0 }}
+                                        </span>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Coluna 4: Servicos -->
+                        <div>
+                            <h3 class="font-bold text-gray-900 mb-4 pb-2 border-b-2 border-green-500 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Serviços
+                            </h3>
+                            <div class="space-y-2">
+                                <a href="{{ route('quote.form') }}" class="block px-4 py-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl hover:from-blue-100 hover:to-blue-200 transition">
+                                    <p class="font-bold text-blue-900 text-sm">Pedir Cotação</p>
+                                    <p class="text-xs text-blue-700">Solicite preços especiais</p>
+                                </a>
+                                <a href="{{ route('product.request') }}" class="block px-4 py-3 bg-gradient-to-r from-green-50 to-green-100 rounded-xl hover:from-green-100 hover:to-green-200 transition">
+                                    <p class="font-bold text-green-900 text-sm">Solicitar Produto</p>
+                                    <p class="text-xs text-green-700">Não encontrou? Peça-nos!</p>
+                                </a>
+                                <a href="{{ route('register.supplier') }}" class="block px-4 py-3 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl hover:from-orange-100 hover:to-orange-200 transition">
+                                    <p class="font-bold text-orange-900 text-sm">Seja Fornecedor</p>
+                                    <p class="text-xs text-orange-700">Venda na plataforma</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -389,9 +497,9 @@
                     </svg>
                 </div>
                 @auth
-                    <span class="font-bold">Ola, {{ auth()->user()->name }}</span>
+                    <span class="font-bold">Olá, {{ auth()->user()->name }}</span>
                 @else
-                    <a href="{{ route('login') }}" class="font-bold">Ola, faca login</a>
+                    <a href="{{ route('login') }}" class="font-bold">Olá, faça login</a>
                 @endauth
                 <button @click="mobileMenuOpen = false" class="ml-auto">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -402,14 +510,61 @@
 
             <!-- Menu Items -->
             <div class="py-2">
-                <div class="px-4 py-2 font-bold text-lg border-b">Comprar por Departamento</div>
+                <!-- Tipos de Produtos -->
+                <div class="px-4 py-2 font-bold text-sm text-gray-500 uppercase tracking-wider">Tipos de Produtos</div>
+                <a href="{{ route('our.products') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition">
+                    <span class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="font-medium text-gray-900">Nossos Produtos</p>
+                        <p class="text-xs text-gray-500">Produtos da empresa</p>
+                    </div>
+                </a>
+                <a href="{{ route('supplier.products') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition">
+                    <span class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="font-medium text-gray-900">Fornecedores</p>
+                        <p class="text-xs text-gray-500">Produtos de parceiros</p>
+                    </div>
+                </a>
+                <a href="{{ route('products') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition border-b">
+                    <span class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="font-medium text-gray-900">Todos os Produtos</p>
+                        <p class="text-xs text-gray-500">Ver catálogo completo</p>
+                    </div>
+                </a>
+
+                <!-- Categorias -->
+                <div class="px-4 py-2 font-bold text-sm text-gray-500 uppercase tracking-wider mt-2">Categorias</div>
                 @foreach($categories as $category)
-                    <a href="{{ route('products') }}?category={{ $category->id }}" class="block px-6 py-3 hover:bg-gray-100">{{ $category->name }}</a>
+                    <a href="{{ route('category.products', $category->slug) }}" class="flex items-center justify-between px-4 py-3 hover:bg-green-50 transition">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                            <span class="text-gray-700">{{ $category->name }}</span>
+                        </span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->products_count ?? 0 }}</span>
+                    </a>
                 @endforeach
 
-                <div class="px-4 py-2 font-bold text-lg border-t border-b mt-2">Ajuda e Configuracoes</div>
+                <!-- Serviços -->
+                <div class="px-4 py-2 font-bold text-sm text-gray-500 uppercase tracking-wider mt-2 border-t pt-4">Serviços</div>
+                <a href="{{ route('quote.form') }}" class="block px-6 py-3 hover:bg-gray-100">Pedir Cotação</a>
+                <a href="{{ route('product.request') }}" class="block px-6 py-3 hover:bg-gray-100 text-green-600">Solicitar Produto</a>
+
+                <div class="px-4 py-2 font-bold text-lg border-t border-b mt-2">Ajuda e Definições</div>
                 <a href="{{ route('cart') }}" class="block px-6 py-3 hover:bg-gray-100">Seu Carrinho</a>
-                <a href="{{ route('quote.form') }}" class="block px-6 py-3 hover:bg-gray-100">Solicitar Cotacao</a>
                 @auth
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="block px-6 py-3 hover:bg-gray-100">Painel Admin</a>
@@ -445,7 +600,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <!-- Column 1 -->
                 <div>
-                    <h3 class="font-bold mb-4">Conheca-nos</h3>
+                    <h3 class="font-bold mb-4">Conheça-nos</h3>
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="#" class="hover:text-white hover:underline">Sobre MozCommodities</a></li>
                         <li><a href="#" class="hover:text-white hover:underline">Carreiras</a></li>
@@ -469,7 +624,7 @@
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="#" class="hover:text-white hover:underline">M-Pesa</a></li>
                         <li><a href="#" class="hover:text-white hover:underline">e-Mola</a></li>
-                        <li><a href="#" class="hover:text-white hover:underline">Cartao de Credito</a></li>
+                        <li><a href="#" class="hover:text-white hover:underline">Cartão de Crédito</a></li>
                     </ul>
                 </div>
 
@@ -479,7 +634,7 @@
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="{{ route('profile.edit') }}" class="hover:text-white hover:underline">Sua Conta</a></li>
                         <li><a href="{{ route('cart') }}" class="hover:text-white hover:underline">Seu Carrinho</a></li>
-                        <li><a href="{{ route('quote.form') }}" class="hover:text-white hover:underline">Pedir Cotacao</a></li>
+                        <li><a href="{{ route('quote.form') }}" class="hover:text-white hover:underline">Pedir Cotação</a></li>
                         <li><a href="{{ route('product.request') }}" class="hover:text-white hover:underline">Solicitar Produto</a></li>
                     </ul>
                 </div>
@@ -500,7 +655,7 @@
                     </a>
                 </div>
                 <div class="text-center text-xs text-gray-400 mt-4">
-                    &copy; {{ date('Y') }} MozCommodities. Todos os direitos reservados. Mocambique
+                    &copy; {{ date('Y') }} MozCommodities. Todos os direitos reservados. Moçambique
                 </div>
             </div>
         </div>

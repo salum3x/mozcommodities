@@ -4,7 +4,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
-                    <h1 class="text-3xl sm:text-4xl font-bold mb-2">Produtos Agricolas</h1>
+                    <h1 class="text-3xl sm:text-4xl font-bold mb-2">Produtos Agrícolas</h1>
                     <p class="text-green-100 text-lg">Qualidade garantida direto dos melhores produtores</p>
                 </div>
                 <div class="flex items-center gap-3 text-sm">
@@ -18,7 +18,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Entrega Rapida
+                        Entrega Rápida
                     </div>
                 </div>
             </div>
@@ -90,8 +90,8 @@
                         <span class="text-sm text-gray-500 hidden sm:inline">Ordenar por:</span>
                         <select class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
                             <option>Mais relevantes</option>
-                            <option>Menor preco</option>
-                            <option>Maior preco</option>
+                            <option>Menor preço</option>
+                            <option>Maior preço</option>
                         </select>
                     </div>
                 </div>
@@ -173,10 +173,10 @@
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                             <div>
                                 <h3 class="text-xl sm:text-2xl font-bold mb-1">Precisa de quantidade maior?</h3>
-                                <p class="text-green-100">Solicite uma cotacao personalizada para grandes pedidos</p>
+                                <p class="text-green-100">Solicite uma cotação personalizada para grandes pedidos</p>
                             </div>
                             <a href="{{ route('quote.form') }}" class="flex-shrink-0 bg-white text-green-600 px-6 py-3 rounded-xl font-bold hover:bg-green-50 transition-colors shadow-lg">
-                                Pedir Cotacao
+                                Pedir Cotação
                             </a>
                         </div>
                     </div>
@@ -222,8 +222,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
-                    <h3 class="font-semibold text-gray-900 text-sm sm:text-base">Entrega Rapida</h3>
-                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Em todo Mocambique</p>
+                    <h3 class="font-semibold text-gray-900 text-sm sm:text-base">Entrega Rápida</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Em todo Moçambique</p>
                 </div>
                 <div class="text-center">
                     <div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -231,8 +231,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <h3 class="font-semibold text-gray-900 text-sm sm:text-base">Melhor Preco</h3>
-                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Precos competitivos</p>
+                    <h3 class="font-semibold text-gray-900 text-sm sm:text-base">Melhor Preço</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Preços competitivos</p>
                 </div>
                 <div class="text-center">
                     <div class="w-12 h-12 sm:w-14 sm:h-14 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -241,7 +241,7 @@
                         </svg>
                     </div>
                     <h3 class="font-semibold text-gray-900 text-sm sm:text-base">Suporte 24/7</h3>
-                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Sempre disponiveis</p>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1">Sempre disponíveis</p>
                 </div>
             </div>
         </div>

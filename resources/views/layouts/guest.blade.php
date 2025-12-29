@@ -28,8 +28,8 @@
                     </div>
 
                     <!-- Content -->
-                    <div class="relative z-10 flex flex-col justify-center h-full px-16 text-white">
-                        <a href="{{ route('home') }}" class="flex items-center gap-3 mb-12 group">
+                    <div class="relative z-10 flex flex-col justify-start h-full px-16 pt-24 text-white">
+                        <a href="{{ route('home') }}" class="flex items-center gap-3 mb-8 mt-12 group">
                             <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30">
                                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>

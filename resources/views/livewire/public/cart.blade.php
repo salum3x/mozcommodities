@@ -46,7 +46,7 @@
                         <!-- Header da tabela (desktop) -->
                         <div class="hidden sm:grid sm:grid-cols-12 gap-4 px-6 py-4 bg-gray-50 border-b text-sm font-medium text-gray-500">
                             <div class="col-span-6">Produto</div>
-                            <div class="col-span-2 text-center">Preco</div>
+                            <div class="col-span-2 text-center">Preço</div>
                             <div class="col-span-2 text-center">Quantidade</div>
                             <div class="col-span-2 text-right">Subtotal</div>
                         </div>
@@ -77,12 +77,12 @@
                                                 <p class="text-xs text-green-600 font-medium mb-1">{{ $item->product->category->name ?? 'Sem categoria' }}</p>
                                                 <h3 class="font-semibold text-gray-900 truncate">{{ $item->product->name }}</h3>
                                                 <p class="text-sm text-gray-500 mt-1">Fornecedor: {{ $item->product->supplier->company_name ?? 'N/A' }}</p>
-                                                <!-- Preco mobile -->
+                                                <!-- Preço mobile -->
                                                 <p class="sm:hidden text-green-600 font-bold mt-2">{{ number_format($item->price_per_kg, 2, ',', '.') }} MT/{{ $item->product->unit ?? 'kg' }}</p>
                                             </div>
                                         </div>
 
-                                        <!-- Preco (desktop) -->
+                                        <!-- Preço (desktop) -->
                                         <div class="hidden sm:block col-span-2 text-center">
                                             <span class="font-semibold text-gray-900">{{ number_format($item->price_per_kg, 2, ',', '.') }} MT</span>
                                             <span class="text-gray-500 text-sm">/{{ $item->product->unit ?? 'kg' }}</span>
@@ -162,7 +162,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Cupom de desconto</label>
                             <div class="flex gap-2">
                                 <input type="text"
-                                       placeholder="Digite o codigo"
+                                       placeholder="Digite o código"
                                        class="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <button class="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 transition">
                                     Aplicar
@@ -182,9 +182,9 @@
                                 Finalizar Compra
                             </a>
 
-                            <!-- Metodos de pagamento -->
+                            <!-- Métodos de pagamento -->
                             <div class="mt-6 pt-6 border-t border-gray-100">
-                                <p class="text-xs text-gray-500 text-center mb-3">Metodos de pagamento aceitos</p>
+                                <p class="text-xs text-gray-500 text-center mb-3">Métodos de pagamento aceitos</p>
                                 <div class="flex justify-center gap-2">
                                     <div class="w-12 h-8 bg-gray-100 rounded flex items-center justify-center">
                                         <span class="text-xs font-bold text-gray-600">M-Pesa</span>
@@ -231,8 +231,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                     </svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-3">Seu carrinho esta vazio</h2>
-                <p class="text-gray-500 mb-8">Parece que voce ainda nao adicionou nenhum produto ao carrinho. Explore nossa loja e encontre produtos incriveis!</p>
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Seu carrinho está vazio</h2>
+                <p class="text-gray-500 mb-8">Parece que você ainda não adicionou nenhum produto ao carrinho. Explore nossa loja e encontre produtos incríveis!</p>
                 <a href="{{ route('products') }}"
                    class="inline-flex items-center px-8 py-4 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition shadow-lg shadow-green-600/30">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,7 +241,7 @@
                     Explorar Produtos
                 </a>
 
-                <!-- Sugestoes -->
+                <!-- Sugestões -->
                 <div class="mt-12 pt-8 border-t border-gray-200">
                     <p class="text-sm text-gray-500 mb-4">Ou navegue por categoria</p>
                     <div class="flex flex-wrap justify-center gap-2">

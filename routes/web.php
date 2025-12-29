@@ -11,6 +11,8 @@ use App\Livewire\Public\QuoteForm;
 Route::get('/', Home::class)->name('home');
 Route::get('/produtos', Products::class)->name('products');
 Route::get('/nossos-produtos', \App\Livewire\Public\OurProducts::class)->name('our.products');
+Route::get('/produtos-fornecedores', \App\Livewire\Public\SupplierProducts::class)->name('supplier.products');
+Route::get('/categoria/{slug}', \App\Livewire\Public\CategoryProducts::class)->name('category.products');
 Route::get('/produto/{slug}', ProductDetail::class)->name('product.detail');
 Route::get('/cotacao', QuoteForm::class)->name('quote.form');
 Route::get('/solicitar-produto', \App\Livewire\Public\ProductRequest::class)->name('product.request');
@@ -18,6 +20,7 @@ Route::get('/carrinho', \App\Livewire\Public\Cart::class)->name('cart');
 Route::get('/finalizar-compra', \App\Livewire\Public\CheckoutCart::class)->name('checkout.cart');
 Route::get('/comprar/{product_id}', \App\Livewire\Public\Checkout::class)->name('checkout');
 Route::get('/pedido/{order}/sucesso', \App\Livewire\Public\OrderSuccess::class)->name('order.success');
+Route::get('/sobre-nos', \App\Livewire\Public\About::class)->name('about');
 
 // Dashboard Geral (redireciona baseado no role)
 Route::get('/painel', function () {
@@ -44,6 +47,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/anuncios', \App\Livewire\Admin\Announcements::class)->name('announcements');
     Route::get('/configuracoes', \App\Livewire\Admin\Settings::class)->name('settings');
     Route::get('/administradores', \App\Livewire\Admin\Administrators::class)->name('administrators');
+    Route::get('/sobre-nos', \App\Livewire\Admin\AboutPage::class)->name('about');
 });
 
 // Rotas Fornecedor
