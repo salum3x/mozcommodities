@@ -108,6 +108,6 @@ class Checkout extends Component
 
     public function render()
     {
-        return view('livewire.public.checkout')->layout('components.layouts.app');
+        return view('livewire.public.checkout')->layout('components.layouts.shop');
     }
 }

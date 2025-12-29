@@ -16,6 +16,6 @@ class OrderSuccess extends Component
 
     public function render()
     {
-        return view('livewire.public.order-success')->layout('components.layouts.app');
+        return view('livewire.public.order-success')->layout('components.layouts.shop');
     }
 }

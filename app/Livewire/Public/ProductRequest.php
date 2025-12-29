@@ -55,6 +55,6 @@ class ProductRequest extends Component
 
     public function render()
     {
-        return view('livewire.public.product-request')->layout('components.layouts.app');
+        return view('livewire.public.product-request')->layout('components.layouts.shop');
     }
 }

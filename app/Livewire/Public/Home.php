@@ -38,6 +38,6 @@ class Home extends Component
         return view('livewire.public.home', [
             'products' => $allProducts,
             'categories' => $categories,
-        ]);
+        ])->layout('components.layouts.shop');
     }
 }

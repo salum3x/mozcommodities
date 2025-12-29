@@ -8,6 +8,6 @@ class QuoteForm extends Component
 {
     public function render()
     {
-        return view('livewire.public.quote-form');
+        return view('livewire.public.quote-form')->layout('components.layouts.shop');
     }
 }

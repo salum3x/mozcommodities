@@ -41,6 +41,6 @@ class OurProducts extends Component
         return view('livewire.public.our-products', [
             'products' => $products,
             'categories' => $categories,
-        ])->layout('components.layouts.app');
+        ])->layout('components.layouts.shop');
     }
 }

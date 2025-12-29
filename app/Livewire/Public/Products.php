@@ -68,6 +68,6 @@ class Products extends Component
         return view('livewire.public.products', [
             'products' => $products,
             'categories' => $categories,
-        ]);
+        ])->layout('components.layouts.shop');
     }
 }
