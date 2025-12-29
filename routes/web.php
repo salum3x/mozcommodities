@@ -43,6 +43,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/cotacoes', \App\Livewire\Admin\QuoteRequests::class)->name('quotes');
     Route::get('/anuncios', \App\Livewire\Admin\Announcements::class)->name('announcements');
     Route::get('/configuracoes', \App\Livewire\Admin\Settings::class)->name('settings');
+    Route::get('/administradores', \App\Livewire\Admin\Administrators::class)->name('administrators');
 });
 
 // Rotas Fornecedor
