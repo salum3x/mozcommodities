@@ -10,6 +10,7 @@ class ProductRequests extends Component
     public $selectedRequest = null;
     public $admin_notes = '';
     public $showNotesModal = false;
+    public $statusFilter = '';
 
     public function updateStatus($requestId, $status)
     {
@@ -41,10 +42,16 @@ class ProductRequests extends Component
 
     public function render()
     {
-        $requests = ProductRequest::latest()->get();
+        $query = ProductRequest::latest();
+
+        if ($this->statusFilter) {
+            $query->where('status', $this->statusFilter);
+        }
+
+        $requests = $query->get();
 
         return view('livewire.admin.product-requests', [
             'requests' => $requests,
-        ])->layout('components.layouts.admin');
+        ])->layout('components.layouts.admin', ['title' => 'Solicitacoes']);
     }
 }
