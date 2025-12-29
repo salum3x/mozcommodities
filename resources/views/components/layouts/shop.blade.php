@@ -277,7 +277,7 @@
                                     <!-- Login Options -->
                                     <div class="p-3 space-y-2">
                                         <!-- Cliente -->
-                                        <a href="{{ route('login') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 transition group">
+                                        <a href="{{ route('login.customer') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 transition group">
                                             <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-500 transition">
                                                 <svg class="w-6 h-6 text-green-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -293,7 +293,7 @@
                                         </a>
 
                                         <!-- Fornecedor -->
-                                        <a href="{{ route('login') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-50 transition group">
+                                        <a href="{{ route('login.supplier') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-orange-50 transition group">
                                             <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition">
                                                 <svg class="w-6 h-6 text-orange-600 group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
@@ -458,8 +458,8 @@
                     <h3 class="font-bold mb-4">Ganhe Dinheiro</h3>
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="{{ route('register.supplier') }}" class="hover:text-white hover:underline">Venda no MozCommodities</a></li>
-                        <li><a href="#" class="hover:text-white hover:underline">Seja um Fornecedor</a></li>
-                        <li><a href="#" class="hover:text-white hover:underline">Anuncie seus Produtos</a></li>
+                        <li><a href="{{ route('register.supplier') }}" class="hover:text-white hover:underline">Seja um Fornecedor</a></li>
+                        <li><a href="{{ route('register.supplier') }}" class="hover:text-white hover:underline">Anuncie seus Produtos</a></li>
                     </ul>
                 </div>
 
@@ -477,10 +477,10 @@
                 <div>
                     <h3 class="font-bold mb-4">Ajuda</h3>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="#" class="hover:text-white hover:underline">Sua Conta</a></li>
-                        <li><a href="#" class="hover:text-white hover:underline">Seus Pedidos</a></li>
-                        <li><a href="#" class="hover:text-white hover:underline">Politica de Entrega</a></li>
-                        <li><a href="#" class="hover:text-white hover:underline">Devolucoes</a></li>
+                        <li><a href="{{ route('profile.edit') }}" class="hover:text-white hover:underline">Sua Conta</a></li>
+                        <li><a href="{{ route('cart') }}" class="hover:text-white hover:underline">Seu Carrinho</a></li>
+                        <li><a href="{{ route('quote.form') }}" class="hover:text-white hover:underline">Pedir Cotacao</a></li>
+                        <li><a href="{{ route('product.request') }}" class="hover:text-white hover:underline">Solicitar Produto</a></li>
                     </ul>
                 </div>
             </div>

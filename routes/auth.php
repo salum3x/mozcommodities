@@ -32,6 +32,15 @@ Route::middleware('guest')->group(function () {
     Route::get('entrar', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
+    // Login pages for different user types
+    Route::get('entrar/cliente', function () {
+        return view('auth.login-customer');
+    })->name('login.customer');
+
+    Route::get('entrar/fornecedor', function () {
+        return view('auth.login-supplier');
+    })->name('login.supplier');
+
     Route::post('entrar', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('esqueci-senha', [PasswordResetLinkController::class, 'create'])
