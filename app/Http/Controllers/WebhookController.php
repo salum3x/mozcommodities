@@ -21,6 +21,11 @@ class WebhookController extends Controller
      */
     public function mpesa(Request $request)
     {
+        if (!$this->verifySharedSecret($request, 'mpesa')) {
+            Log::warning('M-Pesa Webhook rejected: bad shared secret', ['ip' => $request->ip()]);
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         Log::info('M-Pesa Webhook', $request->all());
 
         try {
@@ -50,6 +55,11 @@ class WebhookController extends Controller
      */
     public function emola(Request $request)
     {
+        if (!$this->verifySharedSecret($request, 'emola')) {
+            Log::warning('e-Mola Webhook rejected: bad shared secret', ['ip' => $request->ip()]);
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         Log::info('e-Mola Webhook', $request->all());
 
         try {
@@ -83,13 +93,13 @@ class WebhookController extends Controller
         $sigHeader = $request->header('Stripe-Signature');
         $webhookSecret = config('services.stripe.webhook_secret');
 
+        if (!$webhookSecret) {
+            Log::error('Stripe Webhook rejected: webhook_secret not configured');
+            return response()->json(['error' => 'Webhook secret not configured'], 500);
+        }
+
         try {
-            // Verify webhook signature if secret is configured
-            if ($webhookSecret) {
-                $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $webhookSecret);
-            } else {
-                $event = json_decode($payload, true);
-            }
+            $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $webhookSecret);
 
             Log::info('Stripe Webhook', ['type' => $event['type'] ?? 'unknown']);
 
@@ -128,5 +138,28 @@ class WebhookController extends Controller
             Log::error('Stripe Webhook Error', ['error' => $e->getMessage()]);
             return response()->json(['status' => 'error'], 500);
         }
+    }
+
+    /**
+     * Verify a shared-secret header/query against config('services.<gateway>.webhook_secret').
+     * Fails closed when the secret is configured. If no secret is configured, fails closed
+     * unless the request comes from an allowed IP (config('services.<gateway>.webhook_allowed_ips')).
+     */
+    protected function verifySharedSecret(Request $request, string $gateway): bool
+    {
+        $expected = config("services.{$gateway}.webhook_secret");
+        $allowedIps = (array) config("services.{$gateway}.webhook_allowed_ips", []);
+
+        if ($expected) {
+            $received = $request->header('X-Webhook-Secret') ?? $request->query('secret', '');
+            return is_string($received) && hash_equals((string) $expected, (string) $received);
+        }
+
+        if ($allowedIps) {
+            return in_array($request->ip(), $allowedIps, true);
+        }
+
+        Log::critical("{$gateway} webhook has no secret and no IP allowlist configured — refusing.");
+        return false;
     }
 }

@@ -71,11 +71,29 @@
                         @error('category_id') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                     </div>
 
-                    <!-- Preço -->
+                    <!-- Preço de Custo (P.B.F.) -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Preço (MT) *</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            P.B.F. <span class="text-xs text-gray-500 font-normal">(Preço Base do Fornecedor — interno)</span>
+                        </label>
+                        <input type="number" step="0.01" wire:model="cost_price" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" placeholder="0.00">
+                        @error('cost_price') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+                        <p class="text-xs text-gray-500 mt-1">O teu custo de produção. Não é visível ao cliente.</p>
+                    </div>
+
+                    <!-- Preço de venda -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Preço de venda ao cliente (MZN) *</label>
                         <input type="number" step="0.01" wire:model="price_per_kg" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="0.00">
                         @error('price_per_kg') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+                        @if($cost_price)
+                            <p class="text-xs text-emerald-700 mt-1">
+                                Margem bruta:
+                                @php $margin = $price_per_kg > 0 && $cost_price > 0 ? ((float)$price_per_kg - (float)$cost_price) / (float)$price_per_kg * 100 : 0; @endphp
+                                <strong>{{ number_format($margin, 1, ',', '.') }}%</strong>
+                                (= {{ number_format(((float)$price_per_kg - (float)$cost_price), 2, ',', '.') }} MZN/{{ $unit }})
+                            </p>
+                        @endif
                     </div>
 
                     <!-- Unidade -->

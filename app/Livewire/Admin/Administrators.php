@@ -64,6 +64,7 @@ class Administrators extends Component
 
     public function edit($id)
     {
+        $this->ensureAdmin();
         $admin = User::where('role', 'admin')->findOrFail($id);
         $this->editingId = $id;
         $this->name = $admin->name;
@@ -76,6 +77,7 @@ class Administrators extends Component
 
     public function save()
     {
+        $this->ensureAdmin();
         $this->validate();
 
         if ($this->editingId) {
@@ -109,6 +111,8 @@ class Administrators extends Component
 
     public function delete($id)
     {
+        $this->ensureAdmin();
+
         // Prevent deleting yourself
         if ($id == auth()->id()) {
             session()->flash('error', 'Voce nao pode excluir a sua propria conta!');
@@ -135,6 +139,13 @@ class Administrators extends Component
     public function resetForm()
     {
         $this->reset(['name', 'email', 'phone', 'password', 'password_confirmation', 'editingId']);
+    }
+
+    protected function ensureAdmin(): void
+    {
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            abort(403);
+        }
     }
 
     public function render()

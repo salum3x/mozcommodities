@@ -30,6 +30,21 @@ Route::get('/comprar/{product_id}', \App\Livewire\Public\Checkout::class)->name(
 Route::get('/pedido/{order}/sucesso', \App\Livewire\Public\OrderSuccess::class)->name('order.success');
 Route::get('/sobre-nos', \App\Livewire\Public\About::class)->name('about');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/meus-pedidos', \App\Livewire\Public\MyOrders::class)->name('my-orders');
+    Route::get('/meus-pedidos/{order}/devolucao', \App\Livewire\Public\RequestReturn::class)->name('return.request');
+    Route::get('/favoritos', \App\Livewire\Public\Wishlist::class)->name('wishlist');
+    Route::post('/favoritos/toggle/{product}', function (\App\Models\Product $product) {
+        $added = \App\Models\WishlistItem::toggle(auth()->id(), $product->id);
+        return response()->json(['added' => $added]);
+    })->name('wishlist.toggle');
+});
+
+// Lightweight cart-count endpoint for live header badge sync.
+Route::get('/api/cart-count', fn () => response()->json(['count' => \App\Models\CartItem::getCartCount()]))
+    ->middleware('web')
+    ->name('api.cart-count');
+
 // Dashboard Geral (redireciona baseado no role)
 Route::get('/painel', function () {
     $user = auth()->user();
@@ -56,6 +71,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/configuracoes', \App\Livewire\Admin\Settings::class)->name('settings');
     Route::get('/administradores', \App\Livewire\Admin\Administrators::class)->name('administrators');
     Route::get('/sobre-nos', \App\Livewire\Admin\AboutPage::class)->name('about');
+    Route::get('/devolucoes', \App\Livewire\Admin\Returns::class)->name('returns');
+    Route::get('/pedidos', \App\Livewire\Admin\Orders::class)->name('orders');
+    Route::get('/pagamentos', \App\Livewire\Admin\PaymentSettings::class)->name('payments');
+    Route::get('/frete', \App\Livewire\Admin\Shipping::class)->name('shipping');
+    Route::get('/relatorios', \App\Livewire\Admin\Reports::class)->name('reports');
 });
 
 // Rotas Fornecedor

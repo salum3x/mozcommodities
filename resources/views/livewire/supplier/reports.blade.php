@@ -1,27 +1,33 @@
 <div>
     <div class="space-y-6">
         <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900">Relatorios</h2>
-                <p class="mt-1 text-sm text-gray-600">Analise o desempenho das suas vendas</p>
+        <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Relatórios</h2>
+                    <p class="mt-1 text-sm text-gray-600">Período: <strong>{{ $fromLabel ?? '' }} → {{ $toLabel ?? '' }}</strong></p>
+                </div>
+                @if ($supplier)
+                    <button type="button" wire:click="exportCsv" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
+                        Exportar CSV
+                    </button>
+                @endif
             </div>
 
-            @if($supplier)
-                <!-- Period Filter -->
-                <div class="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-1">
-                    <button wire:click="$set('period', 'week')" class="px-4 py-2 text-sm font-medium rounded-md transition {{ $period === 'week' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">
-                        Semana
-                    </button>
-                    <button wire:click="$set('period', 'month')" class="px-4 py-2 text-sm font-medium rounded-md transition {{ $period === 'month' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">
-                        Mes
-                    </button>
-                    <button wire:click="$set('period', 'year')" class="px-4 py-2 text-sm font-medium rounded-md transition {{ $period === 'year' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">
-                        Ano
-                    </button>
-                    <button wire:click="$set('period', 'all')" class="px-4 py-2 text-sm font-medium rounded-md transition {{ $period === 'all' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">
-                        Tudo
-                    </button>
+            @if ($supplier)
+                <div class="flex flex-wrap items-center gap-2 bg-white rounded-xl border border-gray-200 p-2">
+                    <button wire:click="setPeriod('week')" class="px-3 py-1.5 text-sm font-medium rounded-md transition {{ $period === 'week' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">Semana</button>
+                    <button wire:click="setPeriod('month')" class="px-3 py-1.5 text-sm font-medium rounded-md transition {{ $period === 'month' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">Mês</button>
+                    <button wire:click="setPeriod('year')" class="px-3 py-1.5 text-sm font-medium rounded-md transition {{ $period === 'year' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">Ano</button>
+                    <button wire:click="setPeriod('all')" class="px-3 py-1.5 text-sm font-medium rounded-md transition {{ $period === 'all' ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100' }}">Tudo</button>
+                    <span class="mx-2 text-gray-300">|</span>
+                    <div class="flex items-center gap-2">
+                        <input type="date" wire:model.live="dateFrom" class="rounded-md border-gray-300 text-sm">
+                        <span class="text-gray-400">→</span>
+                        <input type="date" wire:model.live="dateTo" class="rounded-md border-gray-300 text-sm">
+                        <button type="button" wire:click="$set('period', 'custom')" class="text-xs text-emerald-700 underline-offset-2 hover:underline">Aplicar</button>
+                    </div>
                 </div>
             @endif
         </div>
@@ -212,36 +218,36 @@
                     @endif
                 </div>
 
-                <!-- Sales Chart -->
+                <!-- Sales by day -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900">Vendas por Mes</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Vendas por dia</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">Apenas pedidos pagos no período selecionado</p>
                     </div>
-                    @if($salesByMonth->count() > 0)
-                        <div class="p-6">
-                            <div class="space-y-4">
-                                @php
-                                    $maxValue = $salesByMonth->max('total') ?: 1;
-                                @endphp
-                                @foreach($salesByMonth as $sale)
-                                    <div>
-                                        <div class="flex items-center justify-between mb-1">
-                                            <span class="text-sm font-medium text-gray-600">{{ $sale['label'] }}</span>
-                                            <span class="text-sm font-bold text-gray-900">{{ number_format($sale['total'], 2, ',', '.') }} MT</span>
-                                        </div>
-                                        <div class="w-full bg-gray-100 rounded-full h-2.5">
-                                            <div class="bg-gradient-to-r from-green-500 to-green-600 h-2.5 rounded-full" style="width: {{ ($sale['total'] / $maxValue) * 100 }}%"></div>
-                                        </div>
+                    @if ($salesByDay->count() > 0)
+                        <div class="p-6 space-y-2.5">
+                            @php $maxValue = $salesByDay->max('total') ?: 1; @endphp
+                            @foreach ($salesByDay as $day)
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-sm text-gray-700">
+                                            <strong>{{ $day['day'] }}</strong>
+                                            <span class="text-xs text-gray-400 ml-1">{{ $day['orders'] }} {{ $day['orders'] == 1 ? 'pedido' : 'pedidos' }} · {{ number_format($day['qty'], 0, ',', '.') }} kg</span>
+                                        </span>
+                                        <span class="text-sm font-bold text-gray-900">{{ number_format($day['total'], 2, ',', '.') }} MZN</span>
                                     </div>
-                                @endforeach
-                            </div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-emerald-500 to-green-600 h-2 rounded-full" style="width: {{ ($day['total'] / $maxValue) * 100 }}%"></div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     @else
                         <div class="px-6 py-12 text-center">
                             <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
-                            <p class="text-gray-500">Sem dados de vendas para exibir.</p>
+                            <p class="text-gray-500">Sem vendas pagas neste período.</p>
                         </div>
                     @endif
                 </div>

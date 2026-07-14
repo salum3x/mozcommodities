@@ -142,7 +142,8 @@
     </footer>
 
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/258840000000?text=Olá,%20tenho%20interesse%20nos%20produtos%20da%20MozCommodities"
+    @php $whatsapp = \App\Models\Setting::get('company_whatsapp', '258840000000'); @endphp
+    <a href="https://wa.me/{{ $whatsapp }}?text=Olá,%20tenho%20interesse%20nos%20produtos%20da%20MozCommodities"
        target="_blank"
        class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-all hover:scale-110 hover:bg-green-600">
         <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">

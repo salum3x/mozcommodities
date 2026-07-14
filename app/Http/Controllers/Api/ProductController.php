@@ -16,7 +16,7 @@ class ProductController extends Controller
     {
         $query = Product::with(['category', 'supplier.user'])
             ->where('is_active', true)
-            ->where('is_approved', true);
+            ->where('approval_status', 'approved');
 
         // Filter by category
         if ($request->has('category')) {
@@ -94,8 +94,8 @@ class ProductController extends Controller
     {
         $products = Product::with(['category', 'supplier.user'])
             ->where('is_active', true)
-            ->where('is_approved', true)
-            ->where('is_featured', true)
+            ->where('approval_status', 'approved')
+            ->orderBy('created_at', 'desc')
             ->take(10)
             ->get()
             ->map(function ($product) {
@@ -115,7 +115,7 @@ class ProductController extends Controller
     {
         $products = Product::with(['category', 'supplier.user'])
             ->where('is_active', true)
-            ->where('is_approved', true)
+            ->where('approval_status', 'approved')
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get()
@@ -137,7 +137,7 @@ class ProductController extends Controller
         $product = Product::with(['category', 'supplier.user'])
             ->where('slug', $slug)
             ->where('is_active', true)
-            ->where('is_approved', true)
+            ->where('approval_status', 'approved')
             ->first();
 
         if (!$product) {
@@ -152,7 +152,7 @@ class ProductController extends Controller
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
-            ->where('is_approved', true)
+            ->where('approval_status', 'approved')
             ->take(6)
             ->get()
             ->map(function ($p) {
@@ -182,7 +182,7 @@ class ProductController extends Controller
 
         $products = Product::with(['category'])
             ->where('is_active', true)
-            ->where('is_approved', true)
+            ->where('approval_status', 'approved')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                       ->orWhere('description', 'like', "%{$search}%");
@@ -214,7 +214,6 @@ class ProductController extends Controller
             'stock_quantity' => (float) $product->stock_quantity,
             'unit' => $product->unit ?? 'kg',
             'image' => $product->image ? asset('storage/' . $product->image) : null,
-            'is_featured' => $product->is_featured,
             'category' => $product->category ? [
                 'id' => $product->category->id,
                 'name' => $product->category->name,
@@ -223,16 +222,13 @@ class ProductController extends Controller
             'supplier' => $product->supplier ? [
                 'id' => $product->supplier->id,
                 'company_name' => $product->supplier->company_name,
-                'is_verified' => $product->supplier->is_verified,
+                'is_verified' => $product->supplier->status === 'approved',
             ] : null,
             'is_own_product' => $product->supplier_id === null,
         ];
 
         if ($full) {
             $data['description'] = $product->description;
-            $data['origin'] = $product->origin;
-            $data['harvest_date'] = $product->harvest_date;
-            $data['certifications'] = $product->certifications;
             $data['created_at'] = $product->created_at->toISOString();
         }
 

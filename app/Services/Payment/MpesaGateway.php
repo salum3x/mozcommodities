@@ -9,22 +9,27 @@ use Illuminate\Support\Facades\Log;
 
 class MpesaGateway implements PaymentGatewayInterface
 {
-    protected string $apiKey;
-    protected string $publicKey;
-    protected string $serviceProviderCode;
+    protected ?string $apiKey;
+    protected ?string $publicKey;
+    protected ?string $serviceProviderCode;
     protected string $baseUrl;
     protected bool $sandbox;
 
     public function __construct()
     {
-        $this->sandbox = config('services.mpesa.sandbox', true);
-        $this->apiKey = config('services.mpesa.api_key');
-        $this->publicKey = config('services.mpesa.public_key');
-        $this->serviceProviderCode = config('services.mpesa.service_provider_code');
+        $this->sandbox = (bool) (\App\Models\Setting::get('mpesa_sandbox', config('services.mpesa.sandbox', true)));
+        $this->apiKey = \App\Models\Setting::get('mpesa_api_key', config('services.mpesa.api_key'));
+        $this->publicKey = \App\Models\Setting::get('mpesa_public_key', config('services.mpesa.public_key'));
+        $this->serviceProviderCode = \App\Models\Setting::get('mpesa_service_provider_code', config('services.mpesa.service_provider_code'));
 
         $this->baseUrl = $this->sandbox
             ? 'https://api.sandbox.vm.co.mz'
             : 'https://api.vm.co.mz';
+    }
+
+    public function isConfigured(): bool
+    {
+        return !empty($this->apiKey) && !empty($this->publicKey) && !empty($this->serviceProviderCode);
     }
 
     public function getName(): string
@@ -51,6 +56,15 @@ class MpesaGateway implements PaymentGatewayInterface
      */
     public function initiatePayment(Order $order, array $data): array
     {
+        if (!$this->isConfigured()) {
+            Log::error('M-Pesa não configurado: faltam credenciais.');
+            return [
+                'success' => false,
+                'message' => 'O pagamento por M-Pesa não está configurado. Pede ao administrador para configurar as credenciais no painel admin.',
+                'raw_response' => null,
+            ];
+        }
+
         try {
             $phone = $this->formatPhoneNumber($data['phone']);
             $reference = 'ORD' . $order->id . time();

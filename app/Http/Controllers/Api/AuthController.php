@@ -98,7 +98,7 @@ class AuthController extends Controller
             'address' => $request->address,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'is_verified' => false,
+            'status' => 'pending',
         ]);
 
         $token = $user->createToken('mobile-app')->plainTextToken;
@@ -268,7 +268,7 @@ class AuthController extends Controller
             $data['supplier'] = [
                 'id' => $user->supplier->id,
                 'company_name' => $user->supplier->company_name,
-                'is_verified' => $user->supplier->is_verified,
+                'is_verified' => $user->supplier->status === 'approved',
             ];
         }
 

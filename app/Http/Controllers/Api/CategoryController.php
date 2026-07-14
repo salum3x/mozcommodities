@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         $categories = Category::where('is_active', true)
             ->withCount(['products' => function ($query) {
-                $query->where('is_active', true)->where('is_approved', true);
+                $query->where('is_active', true)->where('approval_status', 'approved');
             }])
             ->orderBy('name')
             ->get()

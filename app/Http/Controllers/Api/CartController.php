@@ -58,7 +58,7 @@ class CartController extends Controller
 
         $product = Product::where('id', $request->product_id)
             ->where('is_active', true)
-            ->where('is_approved', true)
+            ->where('approval_status', 'approved')
             ->first();
 
         if (!$product) {

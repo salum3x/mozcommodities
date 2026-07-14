@@ -15,6 +15,12 @@
         <!-- Additional head content -->
         {{ $header ?? '' }}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Alpine.js for guest pages (login/register/reset). The shop layout gets
+             Alpine via Livewire's bundle; guest pages have no Livewire so we load
+             Alpine standalone. CDN with `defer` so it runs after the HTML parses,
+             matching what Livewire normally provides. --}}
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen flex">

@@ -91,23 +91,17 @@
                                         <!-- Quantidade -->
                                         <div class="col-span-2 flex items-center justify-center mt-4 sm:mt-0">
                                             <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                                                <button wire:click="updateQuantity({{ $item->id }}, {{ $item->quantity - 1 }})"
-                                                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition {{ $item->quantity <= 1 ? 'opacity-50 cursor-not-allowed' : '' }}"
-                                                        {{ $item->quantity <= 1 ? 'disabled' : '' }}>
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-                                                    </svg>
+                                                <button type="button" wire:click="updateQuantity({{ $item->id }}, {{ $item->quantity - 1 }})"
+                                                        aria-label="Diminuir"
+                                                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 active:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                                                        @disabled($item->quantity <= 1)>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14"/></svg>
                                                 </button>
-                                                <input type="number"
-                                                       value="{{ $item->quantity }}"
-                                                       min="1"
-                                                       wire:change="updateQuantity({{ $item->id }}, $event.target.value)"
-                                                       class="w-12 h-10 text-center border-x border-gray-200 font-semibold text-gray-900 focus:outline-none">
-                                                <button wire:click="updateQuantity({{ $item->id }}, {{ $item->quantity + 1 }})"
-                                                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                                    </svg>
+                                                <span class="w-12 h-10 flex items-center justify-center border-x border-gray-200 font-semibold text-gray-900 select-none">{{ $item->quantity }}</span>
+                                                <button type="button" wire:click="updateQuantity({{ $item->id }}, {{ $item->quantity + 1 }})"
+                                                        aria-label="Aumentar"
+                                                        class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 active:bg-gray-200 transition">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 5v14M5 12h14"/></svg>
                                                 </button>
                                             </div>
                                         </div>
@@ -149,12 +143,29 @@
                         <div class="space-y-4 text-sm">
                             <div class="flex justify-between text-gray-600">
                                 <span>Subtotal ({{ $cartItems->sum('quantity') }} itens)</span>
-                                <span class="font-medium text-gray-900">{{ number_format($total, 2, ',', '.') }} MT</span>
+                                <span class="font-medium text-gray-900">{{ number_format($total, 2, ',', '.') }} MZN</span>
                             </div>
                             <div class="flex justify-between text-gray-600">
-                                <span>Entrega</span>
-                                <span class="text-green-600 font-medium">A calcular</span>
+                                <span>
+                                    Entrega
+                                    @if (!empty($shipping['label']))
+                                        <span class="block text-xs text-gray-400">{{ $shipping['label'] }}</span>
+                                    @endif
+                                    @if (!empty($shipping['distance']))
+                                        <span class="block text-xs text-gray-400">{{ number_format($shipping['distance'], 1, ',', '.') }} km</span>
+                                    @endif
+                                </span>
+                                @if (!$shipping['available'])
+                                    <span class="text-xs text-amber-700 font-medium text-right max-w-[180px]">{{ $shipping['reason'] ?? 'Calcula no checkout' }}</span>
+                                @elseif ($shipping['cost'] == 0)
+                                    <span class="font-semibold text-emerald-600">GRÁTIS</span>
+                                @else
+                                    <span class="font-medium text-gray-900">{{ number_format($shipping['cost'], 2, ',', '.') }} MZN</span>
+                                @endif
                             </div>
+                            @if (!empty($shipping['breakdown']))
+                                <p class="text-xs text-gray-500 -mt-2">{{ $shipping['breakdown'] }}</p>
+                            @endif
                         </div>
 
                         <!-- Cupom de desconto -->
@@ -172,9 +183,10 @@
 
                         <!-- Total -->
                         <div class="mt-6 pt-6 border-t border-gray-100">
+                            @php $grand = (float) $total + ($shipping['available'] ? (float) $shipping['cost'] : 0); @endphp
                             <div class="flex justify-between items-center mb-6">
                                 <span class="text-lg font-bold text-gray-900">Total</span>
-                                <span class="text-2xl font-bold text-green-600">{{ number_format($total, 2, ',', '.') }} MT</span>
+                                <span class="text-2xl font-bold text-green-600">{{ number_format($grand, 2, ',', '.') }} MZN</span>
                             </div>
 
                             <a href="{{ route('checkout.cart') }}"

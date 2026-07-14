@@ -153,52 +153,64 @@
                             </div>
                         @endif
 
+                        @php
+                            $mpesaEnabled = (bool) \App\Models\Setting::get('payment_mpesa_enabled', false);
+                            $emolaEnabled = (bool) \App\Models\Setting::get('payment_emola_enabled', true);
+                            $cardEnabled  = (bool) \App\Models\Setting::get('payment_card_enabled', false);
+                        @endphp
                         <div class="space-y-4">
-                            <!-- M-Pesa -->
-                            <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all {{ $payment_method === 'mpesa' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300' }}">
-                                <input type="radio" wire:model.live="payment_method" value="mpesa" name="payment_method" class="mt-1">
-                                <div class="ml-4 flex-1">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-lg font-bold">M-Pesa</span>
-                                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded">Rapido</span>
-                                    </div>
-                                    <p class="text-sm text-gray-600 mt-1">Pague instantaneamente pelo celular</p>
-                                </div>
-                                <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold text-xs">M-PESA</span>
-                                </div>
-                            </label>
-
-                            <!-- e-Mola -->
-                            <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all {{ $payment_method === 'emola' ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-gray-300' }}">
-                                <input type="radio" wire:model.live="payment_method" value="emola" name="payment_method" class="mt-1">
+                            <!-- e-Mola (Movitel) -->
+                            <label class="flex items-center p-4 border-2 rounded-xl cursor-pointer transition {{ $payment_method === 'emola' ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-gray-300' }}">
+                                <input type="radio" wire:model.live="payment_method" value="emola" name="payment_method" class="mt-0.5">
                                 <div class="ml-4 flex-1">
                                     <div class="flex items-center gap-2">
                                         <span class="text-lg font-bold">e-Mola</span>
+                                        <span class="px-2 py-0.5 bg-orange-100 text-orange-800 text-[10px] font-bold rounded">Disponível</span>
                                     </div>
-                                    <p class="text-sm text-gray-600 mt-1">Pagamento movel Movitel</p>
+                                    <p class="text-sm text-gray-600 mt-1">Pagamento móvel Movitel</p>
                                 </div>
-                                <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold text-xs">e-Mola</span>
+                                <div class="w-14 h-14 bg-white rounded-lg border border-orange-200 flex items-center justify-center overflow-hidden">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Logo_Movitel_Mo%C3%A7ambique.svg/200px-Logo_Movitel_Mo%C3%A7ambique.svg.png"
+                                         alt="e-Mola"
+                                         class="max-w-full max-h-full object-contain p-1"
+                                         onerror="this.outerHTML='<div class=\'w-full h-full bg-orange-500 flex items-center justify-center\'><span class=\'text-white font-bold text-[10px]\'>e-Mola</span></div>'">
                                 </div>
                             </label>
 
-                            <!-- Card -->
-                            <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all {{ $payment_method === 'card' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300' }}">
-                                <input type="radio" wire:model.live="payment_method" value="card" name="payment_method" class="mt-1">
+                            <!-- M-Pesa (indisponível por padrão) -->
+                            <label class="flex items-center p-4 border-2 rounded-xl transition opacity-60 cursor-not-allowed {{ $mpesaEnabled ? '' : 'bg-gray-50' }}">
+                                <input type="radio" disabled name="payment_method" class="mt-0.5">
                                 <div class="ml-4 flex-1">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-lg font-bold">Cartao de Credito/Debito</span>
-                                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded">Seguro</span>
+                                        <span class="text-lg font-bold">M-Pesa</span>
+                                        <span class="px-2 py-0.5 bg-gray-200 text-gray-700 text-[10px] font-bold rounded">Indisponível no momento</span>
                                     </div>
-                                    <p class="text-sm text-gray-600 mt-1">Visa, Mastercard, American Express</p>
+                                    <p class="text-sm text-gray-500 mt-1">Vai estar disponível em breve — configura no painel admin.</p>
                                 </div>
-                                <div class="flex gap-1">
+                                <div class="w-14 h-14 bg-white rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden grayscale">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/240px-M-PESA_LOGO-01.svg.png"
+                                         alt="M-Pesa"
+                                         class="max-w-full max-h-full object-contain p-1"
+                                         onerror="this.outerHTML='<div class=\'w-full h-full bg-red-600 flex items-center justify-center\'><span class=\'text-white font-bold text-[10px]\'>M-PESA</span></div>'">
+                                </div>
+                            </label>
+
+                            <!-- Cartão (indisponível por padrão) -->
+                            <label class="flex items-center p-4 border-2 rounded-xl transition opacity-60 cursor-not-allowed bg-gray-50">
+                                <input type="radio" disabled name="payment_method" class="mt-0.5">
+                                <div class="ml-4 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-lg font-bold">Cartão de Crédito/Débito</span>
+                                        <span class="px-2 py-0.5 bg-gray-200 text-gray-700 text-[10px] font-bold rounded">Indisponível no momento</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">Visa, Mastercard — configura no painel admin.</p>
+                                </div>
+                                <div class="flex gap-1 grayscale">
                                     <div class="w-10 h-6 bg-blue-900 rounded flex items-center justify-center">
-                                        <span class="text-white font-bold text-xs">VISA</span>
+                                        <span class="text-white font-bold text-[10px]">VISA</span>
                                     </div>
                                     <div class="w-10 h-6 bg-red-500 rounded flex items-center justify-center">
-                                        <span class="text-white font-bold text-xs">MC</span>
+                                        <span class="text-white font-bold text-[10px]">MC</span>
                                     </div>
                                 </div>
                             </label>
@@ -416,5 +428,91 @@
             });
         </script>
         @endpush
+    @endif
+
+    {{-- Payment confirmation popup (M-Pesa / e-Mola) --}}
+    @if ($popupOpen)
+        <div wire:key="payment-popup"
+             @if ($popupState === 'awaiting') wire:poll.2s="pollPaymentStatus" @endif
+             x-data="{ open: true }"
+             x-init="$watch('$wire.popupState', s => { if (s === 'success') setTimeout(() => $wire.goToSuccess(), 1500); })"
+             class="fixed inset-0 z-50 flex items-center justify-center p-4">
+
+            <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"></div>
+
+            <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8">
+                @if ($popupState === 'awaiting')
+                    <div class="text-center">
+                        <div class="mx-auto w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center mb-5">
+                            <svg class="w-10 h-10 text-emerald-600 animate-pulse" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $popupTitle }}</h3>
+                        <p class="text-gray-600 mt-2 text-sm">{{ $popupBody }}</p>
+
+                        <div class="mt-5 flex items-center justify-center gap-1.5">
+                            @for ($i = 0; $i < 3; $i++)
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style="animation-delay: {{ $i * 0.15 }}s"></span>
+                            @endfor
+                        </div>
+
+                        <div class="mt-5 bg-amber-50 border border-amber-200 rounded-lg p-3 text-left text-xs text-amber-900">
+                            <p class="font-medium">No teu telefone:</p>
+                            <ol class="mt-1 list-decimal list-inside space-y-0.5 text-amber-800/90">
+                                <li>Vais receber uma notificação <strong>{{ $payment_method === 'mpesa' ? 'M-Pesa' : 'e-Mola' }}</strong></li>
+                                <li>Introduz o PIN para autorizar</li>
+                                <li>Confirma o pagamento de <strong>{{ number_format($total, 2, ',', '.') }} MZN</strong></li>
+                            </ol>
+                        </div>
+
+                        @if ($pollCount >= 10)
+                            <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3 text-left text-xs text-blue-900">
+                                <p class="font-medium mb-1">Já confirmaste mas continua pendente?</p>
+                                <p class="text-blue-800/90 mb-2">O nosso sistema às vezes demora a receber a confirmação do gateway. O teu pedido <strong>#{{ optional(\App\Models\Order::find($pendingOrderId))->order_number ?? '—' }}</strong> está registado.</p>
+                                <p class="text-blue-800/90">Podes:</p>
+                                <ul class="list-disc list-inside text-blue-800/90 mt-1 space-y-0.5">
+                                    <li>Aguardar mais alguns segundos</li>
+                                    <li>Fechar e ver em <a href="{{ route('my-orders') }}" class="underline font-medium">Meus Pedidos</a></li>
+                                    <li>Contactar o admin se confirmaste mas continua pendente — o admin pode aprovar manualmente</li>
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="mt-5 flex items-center justify-center gap-3">
+                            <button type="button" wire:click="closePopup" class="text-sm text-gray-500 hover:text-gray-700 underline-offset-4 hover:underline">
+                                Fechar
+                            </button>
+                            @if ($pollCount >= 5)
+                                <a href="{{ route('my-orders') }}" class="text-sm font-semibold text-emerald-700 hover:text-emerald-900 underline-offset-4 hover:underline">Ver Meus Pedidos →</a>
+                            @endif
+                        </div>
+                    </div>
+
+                @elseif ($popupState === 'success')
+                    <div class="text-center">
+                        <div class="mx-auto w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mb-5">
+                            <svg class="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $popupTitle }}</h3>
+                        <p class="text-gray-600 mt-2 text-sm">{{ $popupBody }}</p>
+                        <button type="button" wire:click="goToSuccess" class="mt-5 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-5 py-2.5 transition">
+                            Ver detalhes do pedido
+                        </button>
+                    </div>
+
+                @elseif ($popupState === 'failed')
+                    <div class="text-center">
+                        <div class="mx-auto w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mb-5">
+                            <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $popupTitle }}</h3>
+                        <p class="text-gray-600 mt-2 text-sm">{{ $popupBody }}</p>
+                        <div class="mt-5 flex gap-2 justify-center">
+                            <button type="button" wire:click="closePopup" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-800 text-sm font-medium hover:bg-gray-200 transition">Fechar</button>
+                            <a href="{{ route('my-orders') }}" class="px-4 py-2 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-black transition">Ver meus pedidos</a>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
     @endif
 </div>

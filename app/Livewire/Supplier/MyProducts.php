@@ -21,7 +21,8 @@ class MyProducts extends Component
     public $name = '';
     public $category_id = '';
     public $description = '';
-    public $price_per_kg = '';
+    public $cost_price = '';   // P.B.F. — Preço Base do Fornecedor (interno)
+    public $price_per_kg = ''; // Preço de venda ao cliente
     public $stock_quantity = '';
     public $min_quantity = 1;
     public $unit = 'kg';
@@ -36,7 +37,8 @@ class MyProducts extends Component
         'name' => 'required|min:3|max:255',
         'category_id' => 'required|exists:categories,id',
         'description' => 'nullable|max:1000',
-        'price_per_kg' => 'required|numeric|min:0',
+        'cost_price' => 'nullable|numeric|min:0',
+        'price_per_kg' => 'required|numeric|min:0.01',
         'stock_quantity' => 'required|numeric|min:0',
         'min_quantity' => 'required|numeric|min:1',
         'unit' => 'required|in:kg,g,unidade,litro,saco',
@@ -72,6 +74,7 @@ class MyProducts extends Component
             $this->name = $product->name;
             $this->category_id = $product->category_id;
             $this->description = $product->description;
+            $this->cost_price = $product->cost_price;
             $this->price_per_kg = $product->price_per_kg;
             $this->stock_quantity = $product->stock_quantity ?? 0;
             $this->min_quantity = $product->min_quantity ?? 1;
@@ -98,6 +101,7 @@ class MyProducts extends Component
             'slug' => Str::slug($this->name) . '-' . uniqid(),
             'category_id' => $this->category_id,
             'description' => $this->description,
+            'cost_price' => $this->cost_price !== '' ? $this->cost_price : null,
             'price_per_kg' => $this->price_per_kg,
             'stock_quantity' => $this->stock_quantity,
             'min_quantity' => $this->min_quantity,
@@ -172,6 +176,7 @@ class MyProducts extends Component
         $this->name = '';
         $this->category_id = '';
         $this->description = '';
+        $this->cost_price = '';
         $this->price_per_kg = '';
         $this->stock_quantity = '';
         $this->min_quantity = 1;

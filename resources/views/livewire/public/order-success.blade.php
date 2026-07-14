@@ -62,21 +62,45 @@
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
             <h3 class="font-bold text-blue-900 mb-2">Método de Pagamento:</h3>
             <p class="text-blue-800">
-                @if($order->payment_method === 'mpesa')
-                    M-Pesa - Envie {{ number_format($order->total, 2) }} MT para +258 84 000 0000
-                @else
-                    Transferência Bancária - Comprovante enviado
+                <strong>{{ $order->payment_method_label }}</strong>
+                @if ($order->payment_status === 'paid')
+                    — <span class="text-emerald-700 font-semibold">Pago</span>
+                @elseif ($order->payment_status === 'pending')
+                    — <span class="text-amber-700 font-semibold">Aguardando confirmação</span>
+                @elseif ($order->payment_status === 'failed')
+                    — <span class="text-red-700 font-semibold">Falhou</span>
                 @endif
             </p>
+            @if ($order->transaction_id)
+                <p class="text-xs text-blue-700 mt-1">Referência: <span class="font-mono">{{ $order->transaction_id }}</span></p>
+            @endif
+
+            @if ($order->payment_method === 'bank_transfer' && $order->payment_status !== 'paid')
+                <p class="text-sm text-blue-900 mt-3">Transfere {{ number_format($order->total, 2, ',', '.') }} MZN e envia o comprovativo. Vamos confirmar e processar o teu pedido.</p>
+            @endif
         </div>
 
         <!-- Next Steps -->
         <div class="bg-green-50 border border-green-200 rounded-xl p-6">
             <h3 class="font-bold text-green-900 mb-3">Próximos Passos:</h3>
             <ol class="text-green-800 space-y-2 list-decimal list-inside">
-                <li>Você receberá um email de confirmação</li>
-                <li>Complete o pagamento via {{ $order->payment_method === 'mpesa' ? 'M-Pesa' : 'transferência bancária' }}</li>
-                <li>Entraremos em contato para combinar a entrega</li>
+                @if ($order->payment_status === 'paid')
+                    <li>Pagamento confirmado.</li>
+                    <li>Vamos preparar o teu pedido.</li>
+                    <li>Entraremos em contacto para combinar a entrega.</li>
+                @elseif ($order->payment_method === 'bank_transfer')
+                    <li>Transfere {{ number_format($order->total, 2, ',', '.') }} MZN para a conta indicada.</li>
+                    <li>Envia o comprovativo (já foi enviado se anexaste no checkout).</li>
+                    <li>Confirmamos o pagamento em até 24h úteis.</li>
+                @elseif (in_array($order->payment_method, ['emola','mpesa']))
+                    <li>Verifica o teu telefone — recebeste uma notificação {{ $order->payment_method_label }}.</li>
+                    <li>Introduz o PIN para confirmar {{ number_format($order->total, 2, ',', '.') }} MZN.</li>
+                    <li>Vamos receber a confirmação automaticamente e processar.</li>
+                @else
+                    <li>Vais receber um email de confirmação.</li>
+                    <li>Completa o pagamento via {{ $order->payment_method_label }}.</li>
+                    <li>Entraremos em contacto para combinar a entrega.</li>
+                @endif
             </ol>
         </div>
 

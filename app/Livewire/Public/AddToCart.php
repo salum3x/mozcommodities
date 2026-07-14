@@ -54,6 +54,8 @@ class AddToCart extends Component
             ]);
         }
 
+        $addedQty = $this->quantity;
+        $this->dispatch('cart-added', qty: $addedQty, text: "Adicionado: {$addedQty} kg de {$product->name}");
         $this->dispatch('cart-updated');
         $this->dispatch('product-added-to-cart', productName: $product->name);
 

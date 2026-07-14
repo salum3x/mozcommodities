@@ -42,6 +42,16 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function returns()
+    {
+        return $this->hasMany(OrderReturn::class);
+    }
+
+    public function activeReturn()
+    {
+        return $this->hasOne(OrderReturn::class)->whereIn('status', ['pending', 'approved']);
+    }
+
     public function isPaid(): bool
     {
         return $this->payment_status === 'paid';
